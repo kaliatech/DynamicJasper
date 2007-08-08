@@ -335,7 +335,19 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 	 * Sets the band's height to hold all its children
 	 * @param band Band to be resized
 	 */
-	private void setBandFinalHeight(JRDesignBand band) {
+	protected void setBandFinalHeight(JRDesignBand band) {
+		if (band != null) {
+			int finalHeight = findVerticalOffset(band);
+			band.setHeight(finalHeight);
+		}
+	}
+
+	/**
+	 * Finds "Y" corrdinate value in with more elements could be added in the band
+	 * @param band
+	 * @return
+	 */
+	protected int findVerticalOffset(JRDesignBand band) {
 		int finalHeight = 0;
 		if (band != null) {
 			for (Iterator iter = band.getChildren().iterator(); iter.hasNext();) {
@@ -343,8 +355,9 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 				int currentHeight = element.getY() + element.getHeight();
 				if (currentHeight > finalHeight) finalHeight = currentHeight;
 			}
-			band.setHeight(finalHeight);
+			return finalHeight;
 		}
+		return finalHeight;
 	}
 
 	/**

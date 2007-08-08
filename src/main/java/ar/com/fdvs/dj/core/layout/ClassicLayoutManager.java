@@ -34,17 +34,20 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import net.sf.jasperreports.engine.JRElement;
 import net.sf.jasperreports.engine.JRExpression;
+import net.sf.jasperreports.engine.JRTextField;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignElement;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
 import net.sf.jasperreports.engine.design.JRDesignGroup;
 import net.sf.jasperreports.engine.design.JRDesignImage;
 import net.sf.jasperreports.engine.design.JRDesignStyle;
+import net.sf.jasperreports.engine.design.JRDesignSubreport;
 import net.sf.jasperreports.engine.design.JRDesignTextField;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -52,10 +55,12 @@ import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.registration.ColumnsGroupVariablesRegistrationManager;
 import ar.com.fdvs.dj.domain.AutoText;
 import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
+import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.ImageBanner;
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
 import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
+import ar.com.fdvs.dj.domain.entities.Subreport;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import ar.com.fdvs.dj.domain.entities.columns.GlobalGroupColumn;
 
@@ -386,9 +391,53 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 				}
 			}
 			layoutGroupVariables(columnsGroup, jgroup);
+			layoutGroupSubreports(columnsGroup, jgroup);
 		}
 	}
 	
+	/**
+	 * If there is a SubReport on a Group, we do the layout here
+	 * @param columnsGroup
+	 * @param jgroup
+	 */
+	private void layoutGroupSubreports(ColumnsGroup columnsGroup, JRDesignGroup jgroup) {
+		log.debug("Starting subreport layout...");
+		JRDesignBand footerBand = (JRDesignBand) jgroup.getGroupFooter();
+		for (Iterator iterator = columnsGroup.getFooterSubreports().iterator(); iterator.hasNext();) {
+			Subreport sr = (Subreport) iterator.next();
+			JRDesignSubreport subreport = new JRDesignSubreport(new JRDesignStyle().getDefaultStyleProvider());
+			
+			//The data source
+			JRDesignExpression dsExpression = new JRDesignExpression();
+			dsExpression.setText("new "+JRBeanCollectionDataSource.class.getName()+"((java.util.Collection)$F{"+ sr.getDataSourceExpression() +"})");
+			dsExpression.setValueClass(JRBeanCollectionDataSource.class);
+			subreport.setDataSourceExpression(dsExpression);
+			
+			//the subreport design
+			JRDesignExpression srExpression = new JRDesignExpression();
+			String paramname = "subreport_" +getReport().getColumns().indexOf(columnsGroup.getColumnToGroupBy()) + "_" + columnsGroup.getFooterSubreports().indexOf(sr);
+			((DynamicJasperDesign)getDesign()).getParametersWithValues().put(paramname, sr.getReport());
+			srExpression.setText("("+JasperReport.class.getName()+")$P{REPORT_PARAMETERS_MAP}.get( \""+ paramname +"\" )");
+			srExpression.setValueClass(JasperReport.class);
+			subreport.setExpression(srExpression );
+			
+			//some other options (cosmetical)
+			//subreport.setStretchType(JRDesignElement.STRETCH_TYPE_NO_STRETCH);
+			int offset = findVerticalOffset(footerBand) + 1;
+			subreport.setY(offset);
+			subreport.setX(-getReport().getOptions().getLeftMargin());
+			subreport.setWidth(getReport().getOptions().getPage().getWidth());
+			subreport.setHeight(100);
+			subreport.setPositionType(JRElement.POSITION_TYPE_FIX_RELATIVE_TO_TOP);
+			subreport.setStretchType(JRElement.STRETCH_TYPE_NO_STRETCH);
+			
+			//adding to the band
+			footerBand.addElement(subreport);
+			
+		}
+		
+	}
+
 	/**
 	 * If variables are present for a given group, they are placed in it's
 	 * header/footer band.
