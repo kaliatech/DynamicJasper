@@ -332,22 +332,28 @@
         <hr/>
       </div>
     </div>
-    <div id="leftColumn">
-      <div id="navcolumn">
-       #publishDate( "navigation-top" $decoration.publishDate $decoration.version )
-       #mainMenu( $decoration.body.menus )
-       #poweredByLogo( $decoration.poweredBy )
-       #publishDate( "navigation-bottom" $decoration.publishDate $decoration.version )
-      </div>
-    </div>
-    <div id="bodyColumn">
-	  <div id="adSense">
+<table id="mainTable">
+<tr>
+	<td colspan="2" align="center">
 		  ${project.properties.google_adSense_script} 
-	  </div>
-      <div id="contentBox">
-        $bodyContent
-      </div>
-    </div>
+	</td>
+</tr>
+	<tr>
+		<td>
+	       #mainMenu( $decoration.body.menus )
+	       #poweredByLogo( $decoration.poweredBy )
+		</td>
+		<td>
+		   <!-- <div id="bodyColumn"> -->
+		   <!--   <div id="contentBox"> -->
+		        $bodyContent
+		   <!--   </div> -->
+		    <!--  </div> -->
+		</td>
+	</tr>
+</table >    
+   #publishDate( "navigation-top" $decoration.publishDate $decoration.version )
+   #publishDate( "navigation-bottom" $decoration.publishDate $decoration.version )
     <div class="clear">
       <hr/>
     </div>

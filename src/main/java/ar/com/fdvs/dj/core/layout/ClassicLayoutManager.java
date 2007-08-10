@@ -425,7 +425,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			//subreport.setStretchType(JRDesignElement.STRETCH_TYPE_NO_STRETCH);
 			int offset = findVerticalOffset(footerBand) + 1;
 			subreport.setY(offset);
-			subreport.setX(-getReport().getOptions().getLeftMargin());
+			subreport.setX(-getReport().getOptions().getLeftMargin().intValue());
 			subreport.setWidth(getReport().getOptions().getPage().getWidth());
 			subreport.setHeight(100);
 			subreport.setPositionType(JRElement.POSITION_TYPE_FIX_RELATIVE_TO_TOP);

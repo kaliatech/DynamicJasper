@@ -61,7 +61,7 @@ body
     {
     background-color: #fff;
     margin: 0 0 0 0;
-    padding: 30px 0 0 10%;
+    padding: 10px 0 0 10px;
     }
 
 body, td, select, input, li
@@ -70,6 +70,22 @@ body, td, select, input, li
     font-family: Verdana, Helvetica, Arial, sans-serif;
     font-size: small;
     }
+
+
+#mainTable {
+	border: 0px;
+	background-color: #fff;
+	padding: 0px;
+	margin: 0px;
+}
+
+#mainTable tr, #mainTable td{
+	border: 0px;
+	background-color: #fff;
+	padding: 0px;
+	margin: 0px;
+}
+
 
 .composite
   {
@@ -81,15 +97,17 @@ body, td, select, input, li
     border-bottom-width: 10px;
     border-bottom-color: #1B6982;
     background: ;
-    width: 90%;
+#    width: 100%;
     padding: 5px;
     }
 
 #breadcrumbs
     {
-#    background-color: #fff;
+    background-color: #e2edf1;
     height: 15px;
-    width: 90%;
+#    width: 100%;
+    border: none;
+    padding: 1px 5px 1px 5px;
     }
 
 #leftColumn
@@ -98,7 +116,7 @@ body, td, select, input, li
     padding: 0 0 0 0;
     border: 0px solid #999;
     background-color: #fff;
-    width: 15%;
+    width: 13%;
     float: left;
     }
 
@@ -118,6 +136,14 @@ body, td, select, input, li
     background: transparent;
     width: 73.5%;
     }
+
+#adSense
+    {
+    margin: 3px 0 0 0;
+    padding: 5px 0 0 0;
+    border: 0px solid #999;
+    background: transparent;
+}
 
 #footer
     {
