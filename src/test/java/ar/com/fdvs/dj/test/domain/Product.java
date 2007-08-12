@@ -50,11 +50,11 @@ public class Product {
 	static {
 		
 		try {
-			statistics_.add(new Statistic(formatter.parse("01/01/2003"),"",14.3f,50.4f,43.1f));
-			statistics_.add(new Statistic(formatter.parse("01/01/2004"),"",40.0f,49.4f,44.5f));
-			statistics_.add(new Statistic(formatter.parse("01/01/2005"),"",33.3f,63.4f,45f));
-			statistics_.add(new Statistic(formatter.parse("01/01/2006"),"",91.1f,34.4f,46f));
-			statistics_.add(new Statistic(formatter.parse("01/01/2007"),"",99.3f,52.4f,47f));
+			statistics_.add(new Statistic(formatter.parse("01/01/2003"),"West",14.3f,50.4f,43.1f));
+			statistics_.add(new Statistic(formatter.parse("01/01/2004"),"West",40.0f,49.4f,44.5f));
+			statistics_.add(new Statistic(formatter.parse("01/01/2005"),"North",33.3f,63.4f,45f));
+			statistics_.add(new Statistic(formatter.parse("01/01/2006"),"East",91.1f,34.4f,46f));
+			statistics_.add(new Statistic(formatter.parse("01/01/2007"),"South",99.3f,52.4f,47f));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

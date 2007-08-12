@@ -29,14 +29,15 @@
 
 package ar.com.fdvs.dj.core.layout;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import net.sf.jasperreports.engine.JRElement;
 import net.sf.jasperreports.engine.JRExpression;
-import net.sf.jasperreports.engine.JRTextField;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JRDesignBand;
@@ -51,6 +52,7 @@ import net.sf.jasperreports.engine.design.JRDesignTextField;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.registration.ColumnsGroupVariablesRegistrationManager;
 import ar.com.fdvs.dj.domain.AutoText;
@@ -336,7 +338,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 		title.setY(yOffset);
 		title.setPrintWhenExpression(printWhenExpression);
 		title.setRemoveLineWhenBlank(true);
-		applyStyleToTextElement(getReport().getTitleStyle(), title);
+		applyStyleToElement(getReport().getTitleStyle(), title);
 		band.addElement(title);
 
 		JRDesignTextField subtitle = new JRDesignTextField();
@@ -350,7 +352,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			subtitle.setY(title.getY() + title.getHeight());
 			subtitle.setPrintWhenExpression(printWhenExpression);
 			subtitle.setRemoveLineWhenBlank(true);
-			applyStyleToTextElement(getReport().getSubtitleStyle(), subtitle);
+			applyStyleToElement(getReport().getSubtitleStyle(), subtitle);
 			band.addElement(subtitle);
 		}
 
@@ -385,7 +387,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 					designStaticText.setX(col.getPosX().intValue());
 					designStaticText.setY(col.getPosY().intValue());
 
-					applyStyleToTextElement(col.getHeaderStyle(), designStaticText);
+					applyStyleToElement(col.getHeaderStyle(), designStaticText);
 
 					header.addElement(designStaticText);
 				}
@@ -403,7 +405,25 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 	private void layoutGroupSubreports(ColumnsGroup columnsGroup, JRDesignGroup jgroup) {
 		log.debug("Starting subreport layout...");
 		JRDesignBand footerBand = (JRDesignBand) jgroup.getGroupFooter();
-		for (Iterator iterator = columnsGroup.getFooterSubreports().iterator(); iterator.hasNext();) {
+		JRDesignBand headerBand = (JRDesignBand) jgroup.getGroupHeader();
+		
+		layOutSubReportInBand(columnsGroup, headerBand, DJConstants.HEADER);
+		layOutSubReportInBand(columnsGroup, footerBand, DJConstants.FOOTER);
+		
+	}
+
+	/**
+	 * @param columnsGroup
+	 * @param band
+	 * @param position 
+	 */
+	private void layOutSubReportInBand(ColumnsGroup columnsGroup, JRDesignBand band, String position) {
+		
+		List footerSubreportsList = DJConstants.FOOTER.equals(position) 
+				? columnsGroup.getFooterSubreports() 
+				: columnsGroup.getHeaderSubreports();
+				
+		for (Iterator iterator = footerSubreportsList.iterator(); iterator.hasNext();) {
 			Subreport sr = (Subreport) iterator.next();
 			JRDesignSubreport subreport = new JRDesignSubreport(new JRDesignStyle().getDefaultStyleProvider());
 			
@@ -415,7 +435,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			
 			//the subreport design
 			JRDesignExpression srExpression = new JRDesignExpression();
-			String paramname = "subreport_" +getReport().getColumns().indexOf(columnsGroup.getColumnToGroupBy()) + "_" + columnsGroup.getFooterSubreports().indexOf(sr);
+			String paramname = "subreport_" + position + "_" + getReport().getColumns().indexOf(columnsGroup.getColumnToGroupBy()) + "_" + footerSubreportsList.indexOf(sr);
 			((DynamicJasperDesign)getDesign()).getParametersWithValues().put(paramname, sr.getReport());
 			srExpression.setText("("+JasperReport.class.getName()+")$P{REPORT_PARAMETERS_MAP}.get( \""+ paramname +"\" )");
 			srExpression.setValueClass(JasperReport.class);
@@ -423,7 +443,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			
 			//some other options (cosmetical)
 			//subreport.setStretchType(JRDesignElement.STRETCH_TYPE_NO_STRETCH);
-			int offset = findVerticalOffset(footerBand) + 1;
+			int offset = findVerticalOffset(band);
 			subreport.setY(offset);
 			subreport.setX(-getReport().getOptions().getLeftMargin().intValue());
 			subreport.setWidth(getReport().getOptions().getPage().getWidth());
@@ -431,11 +451,12 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			subreport.setPositionType(JRElement.POSITION_TYPE_FIX_RELATIVE_TO_TOP);
 			subreport.setStretchType(JRElement.STRETCH_TYPE_NO_STRETCH);
 			
-			//adding to the band
-			footerBand.addElement(subreport);
+			if (sr.getStyle() != null)
+				applyStyleToElement(sr.getStyle(), subreport);
 			
+			//adding to the band
+			band.addElement(subreport);
 		}
-		
 	}
 
 	/**
@@ -455,8 +476,8 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 		if (group.getLayout().isShowValueInHeader())
 			insertValueInHeader(headerBand, group, headerOffset);
 
-		placeVariableInBand(group.getHeaderVariables(), group, jgroup, ColumnsGroupVariablesRegistrationManager.HEADER, headerBand, headerOffset);
-		placeVariableInBand(group.getFooterVariables(), group, jgroup, ColumnsGroupVariablesRegistrationManager.FOOTER, footerBand, 0);
+		placeVariableInBand(group.getHeaderVariables(), group, jgroup, DJConstants.HEADER, headerBand, headerOffset);
+		placeVariableInBand(group.getFooterVariables(), group, jgroup, DJConstants.FOOTER, footerBand, 0);
 	}
 
 	private void placeVariableInBand(Collection variables, ColumnsGroup columnsGroup, JRDesignGroup jgroup, String type, JRDesignBand band, int yOffset) {
@@ -493,14 +514,14 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 				//Assign the style to the element.
 				//First we look for the specific element style, then the default style for the group variables
 				//and finally the column style.
-				Style defStyle = ColumnsGroupVariablesRegistrationManager.HEADER.equals(type)?columnsGroup.getDefaulHeaderStyle():columnsGroup.getDefaulFooterStyle();
+				Style defStyle = DJConstants.HEADER.equals(type)?columnsGroup.getDefaulHeaderStyle():columnsGroup.getDefaulFooterStyle();
 
 				if (var.getStyle() != null)
-					applyStyleToTextElement(var.getStyle(), textField);
+					applyStyleToElement(var.getStyle(), textField);
 				else if (defStyle != null)
-					applyStyleToTextElement(defStyle, textField);
+					applyStyleToElement(defStyle, textField);
 				else
-					applyStyleToTextElement(col.getStyle(), textField);
+					applyStyleToElement(col.getStyle(), textField);
 
 				band.addElement(textField);
 
@@ -526,7 +547,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 					globalTextField.setY(yOffset);
 				globalTextField.setKey("global_legend_"+type);
 
-				applyStyleToTextElement(globalCol.getStyle(), globalTextField);
+				applyStyleToElement(globalCol.getStyle(), globalTextField);
 
 				band.addElement(globalTextField);
 			}
@@ -536,6 +557,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 	private void insertValueInHeader(JRDesignBand headerBand, ColumnsGroup columnsGroup, int headerOffset) {
 		JRDesignTextField textField = generateTextFieldFromColumn(columnsGroup.getColumnToGroupBy(), columnsGroup.getHeaderHeight().intValue(), columnsGroup);
 		textField.setHorizontalAlignment(columnsGroup.getColumnToGroupBy().getStyle().getHorizontalAlign().getValue());
+		textField.setStretchType(JRDesignElement.STRETCH_TYPE_NO_STRETCH); //XXX this is a patch for subreports, ensure it works well.
 		textField.setY(textField.getY() + headerOffset);
 		headerBand.addElement(textField);
 	}

@@ -150,7 +150,10 @@ public class SubReportTest extends TestCase {
 		ColumnsGroup g2 = gb2.addCriteriaColumn((PropertyColumn) columnBranch) // and we add the same operations for the columnAmount and
 				.addFooterVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
 				.addFooterVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
+				.addHeaderVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
+				.addHeaderVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
 				.addDefaultFooterVariableStyle(defaultFooterVariableStyle)
+				.addDefaultHeaderVariableStyle(defaultFooterVariableStyle)
 				.build();
 
 		drb.addColumn(columnState);
@@ -165,19 +168,32 @@ public class SubReportTest extends TestCase {
 
 		drb.addGroup(g1); // add group g1
 		drb.addGroup(g2); // add group g2
-		JasperReport jrSubreport = createSubreport();
-		Subreport subreport = new Subreport();
-		subreport.setReport(jrSubreport);
-		subreport.setDataSourceExpression("statistics");
-		g2.getFooterSubreports().add(subreport);
 
+		JasperReport jrHeaderSubreport = createHeaderSubreport();
+		Subreport headerSubreport = new Subreport();
+		headerSubreport.setReport(jrHeaderSubreport);
+		headerSubreport.setDataSourceExpression("statistics");
+		g2.getHeaderSubreports().add(headerSubreport);
+
+		JasperReport jrFooterSubreport = createFooterSubreport();
+		Subreport footerSubreport = new Subreport();
+		footerSubreport.setReport(jrFooterSubreport);
+		footerSubreport.setDataSourceExpression("statistics");
+		g2.getFooterSubreports().add(footerSubreport);
+		
+		Style subreportStyle = new Style();
+		subreportStyle.setBorder(Border.MEDIUM);
+		subreportStyle.setBorderColor(Color.blue);
+		footerSubreport.setStyle(subreportStyle);
+		headerSubreport.setStyle(subreportStyle);
+		
 		drb.addUseFullPageWidth(true);
 
 		DynamicReport dr = drb.build();
 		return dr;
 	}
 
-	private JasperReport createSubreport() throws Exception {
+	private JasperReport createHeaderSubreport() throws Exception {
 		FastReportBuilder rb = new FastReportBuilder();
 		DynamicReport dr = rb
 			.addColumn("Date", "date", Date.class.getName(), 100)
@@ -188,6 +204,21 @@ public class SubReportTest extends TestCase {
 			.addUseFullPageWidth(true)
 			.addTitle("Subreport for this group")
 			.build();
+		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
+	}
+
+	private JasperReport createFooterSubreport() throws Exception {
+		FastReportBuilder rb = new FastReportBuilder();
+		DynamicReport dr = rb
+		.addColumn("Area", "name", String.class.getName(), 100)
+		.addColumn("Average", "average", Float.class.getName(), 50)
+		.addColumn("%", "percentage", Float.class.getName(), 50)
+		.addColumn("Amount", "amount", Float.class.getName(), 50)
+		.addGroups(1)
+		.addMargins(5, 5, 20, 20)
+		.addUseFullPageWidth(true)
+		.addTitle("Subreport for this group")
+		.build();
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}
 

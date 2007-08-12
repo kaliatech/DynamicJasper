@@ -151,7 +151,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 					ConditionalStyle condition = (ConditionalStyle) iterator.next();
 					JRDesignTextField textField = generateTextFieldFromColumn(column, getReport().getOptions().getDetailHeight().intValue(), null);
 					transformDetailBandTextField(column, textField);
-					applyStyleToTextElement(condition.getStyle(), textField);
+					applyStyleToElement(condition.getStyle(), textField);
 					textField.setPrintWhenExpression(getExpressionForConditionalStyle(condition.getName(), column.getTextForExpression()));
 					detail.addElement(textField);
 				}
@@ -229,13 +229,13 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 			if (headerStyle == null)
 				headerStyle = report.getOptions().getDefaultHeaderStyle();
 
-			applyStyleToTextElement(headerStyle, textField);
+			applyStyleToElement(headerStyle, textField);
 
 			band.addElement(textField);
 		}
 	}
 
-	protected final void applyStyleToTextElement(Style style, JRDesignTextElement textElement) {
+	protected final void applyStyleToElement(Style style, JRDesignElement textElement) {
 		textElement.setStyle(style.transform());
 		if (textElement instanceof JRDesignTextElement ) {
 			JRDesignTextElement textField = (JRDesignTextElement) textElement;
@@ -395,7 +395,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
         if (columnStyle == null)
         	columnStyle = report.getOptions().getDefaultDetailStyle();
 
-		applyStyleToTextElement(columnStyle, textField);
+		applyStyleToElement(columnStyle, textField);
 
         if (group != null) {
         	int index = getReport().getColumnsGroups().indexOf(group);

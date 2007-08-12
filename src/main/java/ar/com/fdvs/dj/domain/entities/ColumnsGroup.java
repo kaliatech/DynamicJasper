@@ -63,6 +63,7 @@ public class ColumnsGroup extends Entity {
 	private GroupLayout layout = GroupLayout.VALUE_IN_HEADER;
 	
 	private List footerSubreports = new ArrayList();
+	private List headerSubreports = new ArrayList();
 	
 	/**
 	 * Default Style for variables when showing in footer.
@@ -135,6 +136,10 @@ public class ColumnsGroup extends Entity {
 
 	public List getFooterSubreports() {
 		return footerSubreports;
+	}
+
+	public List getHeaderSubreports() {
+		return headerSubreports;
 	}
 
 }
