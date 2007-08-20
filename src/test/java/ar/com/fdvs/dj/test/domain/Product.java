@@ -45,7 +45,7 @@ public class Product {
 	private Long quantity;
 	private Float amount;
 	
-	private static List statistics_ = new ArrayList();
+	public static List statistics_ = new ArrayList();
 	private static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	static {
 		

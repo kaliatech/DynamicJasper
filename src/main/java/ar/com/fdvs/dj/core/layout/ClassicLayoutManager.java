@@ -29,7 +29,6 @@
 
 package ar.com.fdvs.dj.core.layout;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +38,6 @@ import java.util.List;
 import net.sf.jasperreports.engine.JRElement;
 import net.sf.jasperreports.engine.JRExpression;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JRDesignBand;
 import net.sf.jasperreports.engine.design.JRDesignElement;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
@@ -65,6 +63,7 @@ import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
 import ar.com.fdvs.dj.domain.entities.Subreport;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import ar.com.fdvs.dj.domain.entities.columns.GlobalGroupColumn;
+import ar.com.fdvs.dj.util.SubReportUtil;
 
 /**
  * Main Layout Manager recommended for most cases.</br>
@@ -428,10 +427,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			JRDesignSubreport subreport = new JRDesignSubreport(new JRDesignStyle().getDefaultStyleProvider());
 			
 			//The data source
-			JRDesignExpression dsExpression = new JRDesignExpression();
-			dsExpression.setText("new "+JRBeanCollectionDataSource.class.getName()+"((java.util.Collection)$F{"+ sr.getDataSourceExpression() +"})");
-			dsExpression.setValueClass(JRBeanCollectionDataSource.class);
-			subreport.setDataSourceExpression(dsExpression);
+			subreport.setDataSourceExpression(SubReportUtil.getDataSourceExpression(sr));
 			
 			//the subreport design
 			JRDesignExpression srExpression = new JRDesignExpression();
@@ -440,6 +436,11 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			srExpression.setText("("+JasperReport.class.getName()+")$P{REPORT_PARAMETERS_MAP}.get( \""+ paramname +"\" )");
 			srExpression.setValueClass(JasperReport.class);
 			subreport.setExpression(srExpression );
+			
+			
+			//set the parameters
+			subreport.setParametersMapExpression(SubReportUtil.getParameterExpression(sr));
+			
 			
 			//some other options (cosmetical)
 			//subreport.setStretchType(JRDesignElement.STRETCH_TYPE_NO_STRETCH);

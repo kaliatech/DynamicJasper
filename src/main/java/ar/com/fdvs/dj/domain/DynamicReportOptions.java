@@ -242,7 +242,8 @@ public class DynamicReportOptions {
 	}
 
 	public Style getDefaultHeaderStyle() {
-		return defaultHeaderStyle.cloneStyle();
+//		return defaultHeaderStyle.cloneStyle();
+		return defaultHeaderStyle;
 	}
 
 	public void setDefaultHeaderStyle(Style defaultHeaderStyle) {

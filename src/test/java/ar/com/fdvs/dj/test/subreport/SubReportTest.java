@@ -27,7 +27,7 @@
  *
  */
 
-package ar.com.fdvs.dj.test;
+package ar.com.fdvs.dj.test.subreport;
 
 import java.awt.Color;
 import java.util.Collection;
@@ -41,6 +41,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperDesignViewer;
 import net.sf.jasperreports.view.JasperViewer;
+import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
@@ -61,6 +62,8 @@ import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
 import ar.com.fdvs.dj.domain.entities.Subreport;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.test.ReportExporter;
+import ar.com.fdvs.dj.test.TestRepositoryProducts;
 import ar.com.fdvs.dj.util.SortUtils;
 
 public class SubReportTest extends TestCase {
@@ -173,6 +176,8 @@ public class SubReportTest extends TestCase {
 		Subreport headerSubreport = new Subreport();
 		headerSubreport.setReport(jrHeaderSubreport);
 		headerSubreport.setDataSourceExpression("statistics");
+		headerSubreport.setDataSourceOrigin(DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD);
+		headerSubreport.setDataSourceType(DJConstants.DATA_SOURCE_TYPE_COLLECTION);
 		g2.getHeaderSubreports().add(headerSubreport);
 
 		JasperReport jrFooterSubreport = createFooterSubreport();
@@ -185,7 +190,9 @@ public class SubReportTest extends TestCase {
 		subreportStyle.setBorder(Border.MEDIUM);
 		subreportStyle.setBorderColor(Color.blue);
 		footerSubreport.setStyle(subreportStyle);
-		headerSubreport.setStyle(subreportStyle);
+		footerSubreport.setDataSourceOrigin(DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD);
+		footerSubreport.setDataSourceType(DJConstants.DATA_SOURCE_TYPE_COLLECTION);
+		footerSubreport.setStyle(subreportStyle);
 		
 		drb.addUseFullPageWidth(true);
 
