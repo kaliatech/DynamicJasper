@@ -31,23 +31,18 @@ package ar.com.fdvs.dj.test.subreport;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.view.JasperDesignViewer;
 import net.sf.jasperreports.view.JasperViewer;
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
@@ -57,7 +52,6 @@ import ar.com.fdvs.dj.domain.builders.GroupBuilder;
 import ar.com.fdvs.dj.domain.builders.SubReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.GroupLayout;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Stretching;
 import ar.com.fdvs.dj.domain.constants.Transparency;
@@ -140,31 +134,36 @@ public class SubReportBuilderTest extends TestCase {
 						"Amount").addWidth(new Integer(90))
 				.addPattern("$ 0.00").addStyle(importeStyle).addHeaderStyle(
 						headerStyle).build();
-
-		GroupBuilder gb1 = new GroupBuilder();
 		
-//		 define the criteria column to group by (columnState)
-		ColumnsGroup g1 = gb1.addCriteriaColumn((PropertyColumn) columnState).addFooterVariable(columnAmount,
-						ColumnsGroupVariableOperation.SUM) // tell the group place a variable footer of the column "columnAmount" with the SUM of allvalues of the columnAmount in this group.
-				.addFooterVariable(columnaQuantity,
-						ColumnsGroupVariableOperation.SUM) // idem for the columnaQuantity column
-				.addGroupLayout(GroupLayout.VALUE_IN_HEADER_WITH_COLNAMES) // tells the group how to be shown, there are manyposibilities, see the GroupLayout for more.
-				.build();
+		/**
+		 * Create the subreport. Note that the "subreport" object is then passed
+		 * as parameter to the GroupBuilder
+		 */
+		Subreport subreport = new SubReportBuilder()
+						.addDataSource(	DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_PARAMETER,
+										DJConstants.DATA_SOURCE_TYPE_COLLECTION,
+										"statistics")
+						.addReport(createFooterSubreport())
+						.build();
+
+		/**
+		 * add in a map the paramter with the data source to use in the subreport.
+		 * The "params" map is later passed to the DynamicJasperHelper.generateJasperPrint(...)
+		 */
+		params.put("statistics", Product.statistics_  ); // the 2nd param is a static Collection	
+
+		/**
+		 * Create the group and add the subreport (as a Fotter subreport)
+		 */
+		GroupBuilder gb1 = new GroupBuilder();
+		ColumnsGroup g1 = gb1.addCriteriaColumn((PropertyColumn) columnState)
+						.addFooterSubreport(subreport)
+						.build();
 
 		Style defaultFooterVariableStyle = new Style();
 		defaultFooterVariableStyle.setStreching(Stretching.NO_STRETCH);
 		defaultFooterVariableStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
 		defaultFooterVariableStyle.setFont(Font.ARIAL_MEDIUM_BOLD);
-		
-		GroupBuilder gb2 = new GroupBuilder(); // Create another group (using another column as criteria)
-		ColumnsGroup g2 = gb2.addCriteriaColumn((PropertyColumn) columnBranch) // and we add the same operations for the columnAmount and
-				.addFooterVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
-				.addFooterVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
-				.addHeaderVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
-				.addHeaderVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
-				.addDefaultFooterVariableStyle(defaultFooterVariableStyle)
-				.addDefaultHeaderVariableStyle(defaultFooterVariableStyle)
-				.build();
 
 		drb.addColumn(columnState);
 		drb.addColumn(columnBranch);
@@ -174,33 +173,7 @@ public class SubReportBuilderTest extends TestCase {
 		drb.addColumn(columnaQuantity);
 		drb.addColumn(columnAmount);
 		
-		drb.addField("statistics", List.class.getName()); //we need this cause is used by one subreport
-
 		drb.addGroup(g1); // add group g1
-		drb.addGroup(g2); // add group g2
-		
-		
-		SubReportBuilder srb1 = new SubReportBuilder();
-		Subreport headerSubreport = srb1.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD, 
-							DJConstants.DATA_SOURCE_TYPE_COLLECTION, 
-							"statistics")
-			.addReport(createHeaderSubreport())
-			.build();
-
-		g2.getHeaderSubreports().add(headerSubreport);
-
-		SubReportBuilder srb2 = new SubReportBuilder();
-					Subreport jrFooterSubreport = srb2.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_PARAMETER, 
-							DJConstants.DATA_SOURCE_TYPE_ARRAY, 
-							"statistics")
-				.addReport(createFooterSubreport())
-				.build();
-					
-//		params.put("statistics", new JRBeanCollectionDataSource( Product.statistics_ ));
-		params.put("statistics", Product.statistics_.toArray()  );
-		
-
-		g2.getFooterSubreports().add(jrFooterSubreport);
 		
 		drb.addUseFullPageWidth(true);
 		
@@ -209,20 +182,22 @@ public class SubReportBuilderTest extends TestCase {
 		return dr;
 	}
 
-	private JasperReport createHeaderSubreport() throws Exception {
-		FastReportBuilder rb = new FastReportBuilder();
-		DynamicReport dr = rb
-			.addColumn("Date", "date", Date.class.getName(), 100)
-			.addColumn("Average", "average", Float.class.getName(), 50)
-			.addColumn("%", "percentage", Float.class.getName(), 50)
-			.addColumn("Amount", "amount", Float.class.getName(), 50)
-			.addMargins(5, 5, 20, 20)
-			.addUseFullPageWidth(true)
-			.addTitle("Subreport for this group")
-			.build();
-		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
+	public void testReport() throws Exception {
+		DynamicReport dr = buildReport();
+		Collection dummyCollection = TestRepositoryProducts.getDummyCollection();
+		dummyCollection = SortUtils.sortCollection(dummyCollection, dr.getColumns());
+		
+		JRDataSource ds = new JRBeanCollectionDataSource(dummyCollection);
+		JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds, params);
+		ReportExporter.exportReport(jp, System.getProperty("user.dir") + "/target/SubReportBuilderTest.pdf");
+		JasperViewer.viewReport(jp);
 	}
-
+	
+	/**
+	 * Created and compiles dynamically a report to be used as subreportr
+	 * @return
+	 * @throws Exception
+	 */
 	private JasperReport createFooterSubreport() throws Exception {
 		FastReportBuilder rb = new FastReportBuilder();
 		DynamicReport dr = rb
@@ -238,23 +213,8 @@ public class SubReportBuilderTest extends TestCase {
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}
 
-	public void testReport() {
-	try {
-		DynamicReport dr = buildReport();
-		Collection dummyCollection = TestRepositoryProducts.getDummyCollection();
-		dummyCollection = SortUtils.sortCollection(dummyCollection,dr.getColumns());
-		
-		JRDataSource ds = new JRBeanCollectionDataSource(dummyCollection);
-		JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds,params);
-		ReportExporter.exportReport(jp, System.getProperty("user.dir")+ "/target/SubReportTest.pdf");
-		JasperViewer.viewReport(jp);
-//		JasperDesignViewer.viewReportDesign(DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager()));
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		SubReportBuilderTest test = new SubReportBuilderTest();
 		test.testReport();
 	}

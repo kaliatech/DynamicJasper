@@ -157,7 +157,7 @@ public class DynamicReportBuilder {
 
 	private void concatenateReports() {
 		ArrayList aux = new ArrayList(concatenatedReports);
-		Collections.reverse(aux);
+//		Collections.reverse(aux);
 		for (Iterator iterator = aux.iterator(); iterator.hasNext();) {
 			Subreport subreport = (Subreport) iterator.next();
 			ColumnsGroup globalGroup = createDummyGroup();

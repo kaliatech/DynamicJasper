@@ -36,6 +36,7 @@ import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.constants.GroupLayout;
 import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
 import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
+import ar.com.fdvs.dj.domain.entities.Subreport;
 import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
 import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 
@@ -128,6 +129,16 @@ public class GroupBuilder {
 
 	public GroupBuilder addDefaultHeaderVariableStyle(Style defaultHeaderVariableStyle) {
 		this.defaultHeaderVariableStyle = defaultHeaderVariableStyle;
+		return this;
+	}
+
+	public GroupBuilder addHeaderSubreport(Subreport subreport) {
+		group.getHeaderSubreports().add(subreport);
+		return this;
+	}
+
+	public GroupBuilder addFooterSubreport(Subreport subreport) {
+		group.getFooterSubreports().add(subreport);
 		return this;
 	}
 

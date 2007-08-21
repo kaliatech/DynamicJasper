@@ -29,7 +29,6 @@
 
 package ar.com.fdvs.dj.test.subreport;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -51,16 +50,11 @@ import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.builders.FastReportBuilder;
 import ar.com.fdvs.dj.domain.builders.SubReportBuilder;
-import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.Transparency;
-import ar.com.fdvs.dj.domain.constants.VerticalAlign;
 import ar.com.fdvs.dj.domain.entities.Subreport;
 import ar.com.fdvs.dj.test.ChartReportTest;
 import ar.com.fdvs.dj.test.ReportExporter;
 import ar.com.fdvs.dj.test.TestRepositoryProducts;
-import ar.com.fdvs.dj.test.domain.DummyObject;
 import ar.com.fdvs.dj.test.domain.Product;
 
 public class ConcatenatedReportTest extends TestCase {
@@ -69,21 +63,14 @@ public class ConcatenatedReportTest extends TestCase {
 
 	public DynamicReport buildReport() throws Exception {
 
-		Style headerStyle = new Style();
-		headerStyle.setFont(Font.ARIAL_MEDIUM_BOLD);
-		headerStyle.setBorder(Border.MEDIUM);
-		headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
-		headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
-
+		
+		
 		Style titleStyle = new Style();
-		titleStyle.setFont(new Font(18, Font._FONT_VERDANA, true));
-		Style importeStyle = new Style();
-		importeStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
-		Style oddRowStyle = new Style();
-		oddRowStyle.setBorder(Border.NO_BORDER);
-		oddRowStyle.setBackgroundColor(Color.LIGHT_GRAY);
-		oddRowStyle.setTransparency(Transparency.OPAQUE);
+		titleStyle.setFont(new Font(24, Font._FONT_VERDANA, true));
 
+		/**
+		 * 1st) Whe create an empty report (just title)
+		 */
 		DynamicReportBuilder drb = new DynamicReportBuilder();
 		Integer margin = new Integer(20);
 		drb
@@ -92,58 +79,85 @@ public class ConcatenatedReportTest extends TestCase {
 			.addSubtitle("All the reports shown here are concatenated as sub reports")				
 			.addDetailHeight(new Integer(15)).addLeftMargin(margin)
 			.addRightMargin(margin).addTopMargin(margin).addBottomMargin(margin)
-			.addPrintBackgroundOnOddRows(true)
-			.addAutoText(AutoText.AUTOTEXT_PAGE_X_OF_Y, AutoText.POSITION_FOOTER,AutoText.ALIGMENT_CENTER)
-			.addOddRowBackgroundStyle(oddRowStyle)
-			.addField("data1", Collection.class.getName())
-			.addField("data2", Collection.class.getName());
+			.addUseFullPageWidth(true)
+			.addAutoText(AutoText.AUTOTEXT_PAGE_X_OF_Y, AutoText.POSITION_FOOTER,AutoText.ALIGMENT_CENTER);
 
 		
-
-		SubReportBuilder srb1 = new SubReportBuilder();
-		Subreport subreport1 = srb1.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD,
-				DJConstants.DATA_SOURCE_TYPE_COLLECTION, 
-				"data2")
-				.addReport(createHeaderSubreport())
+		/**
+		 * 2nd) First subreport to add
+		 */
+		//Create a subreport
+		Subreport subreport1 =  new SubReportBuilder()
+				.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_PARAMETER,
+								DJConstants.DATA_SOURCE_TYPE_COLLECTION, 
+								"statistics")
+				.addReport(createSubreport1())
 				.build();
-		
-		SubReportBuilder srb2 = new SubReportBuilder();
-					Subreport subreport2 = srb2.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD, 
-							DJConstants.DATA_SOURCE_TYPE_COLLECTION, 
-					"data2")
-				.addReport(createFooterSubreport())
-				.build();
-					
-//		params.put("statistics", Product.statistics_.toArray()  );
-//
-//		params.put("subreportsDataSource", TestRepositoryProducts.getDummyCollection()  );
-		
-//		drb.addConcatenatedReport(subreport1);
-//		drb.addConcatenatedReport(subreport2);
-//		drb.addConcatenatedReport(subreport1);
-//		drb.addConcatenatedReport(subreport2);
 
+		//Add the data source of the sub-report as a parameter
+		params.put("statistics", Product.statistics_ );
+		//add the subreport to the main report builder
+		drb.addConcatenatedReport(subreport1);
+		
+		/**
+		 * 3rd) One more report
+		 */
+		//Create a subreport
+		Subreport subreport2 = new SubReportBuilder()
+				.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_PARAMETER, 
+								DJConstants.DATA_SOURCE_TYPE_ARRAY, 
+								"statisticsArray")
+				.addReport(createSubreport2())
+				.build();
+		//Add the data source of the sub-report as a parameter		
+		params.put("statisticsArray", Product.statistics_.toArray() );
+		//add the subreport to the main report builder
+		drb.addConcatenatedReport(subreport2);
+
+		/**
+		 * 4th) And one more report (from another test)
+		 */
+		//Create a subreport
 		ChartReportTest crt = new ChartReportTest();
 		JasperReport chartJr = DynamicJasperHelper.generateJasperReport(crt.buildReport(), new ClassicLayoutManager());
 		SubReportBuilder srb3 = new SubReportBuilder();
-		Subreport subreport3 = srb3.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD, 
+		Subreport subreport3 = srb3.addDataSource( DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_PARAMETER, 
 									DJConstants.DATA_SOURCE_TYPE_COLLECTION, 
-									"data1")
+									"subreportsDataSource")
 			.addReport(chartJr)
 			.build();		
-		
+		//Add the data source of the sub-report as a parameter		
+		params.put("subreportsDataSource", TestRepositoryProducts.getDummyCollection()  );
+		//add the subreport to the main report builder
 		drb.addConcatenatedReport(subreport3);
-//		drb.addConcatenatedReport(subreport1);
-//		drb.addConcatenatedReport(subreport3);
 
-		drb.addUseFullPageWidth(true);
 		
+		//thats it!!!!
 		DynamicReport dr = drb.build();
 		
 		return dr;
 	}
+	
+	public void testReport() throws Exception {
+			DynamicReport dr = buildReport();
+			Collection mainDataSource = new ArrayList();
+			// One trick: we must use as data source for the main report a
+			// collection with one object (anything)
+			mainDataSource.add("");
 
-	private JasperReport createHeaderSubreport() throws Exception {
+			JRDataSource ds = new JRBeanCollectionDataSource(mainDataSource);
+			JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds, params);
+			ReportExporter.exportReport(jp, System.getProperty("user.dir") + "/target/ConcatenatedReportTest.pdf");
+			JasperViewer.viewReport(jp);
+	}	
+
+	/**
+	 * Creates a dynamic reports and compiles it in order to be used
+	 * as a subreport
+	 * @return
+	 * @throws Exception
+	 */
+	private JasperReport createSubreport1() throws Exception {
 		FastReportBuilder rb = new FastReportBuilder();
 		DynamicReport dr = rb
 			.addColumn("Date", "date", Date.class.getName(), 100)
@@ -157,7 +171,13 @@ public class ConcatenatedReportTest extends TestCase {
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}
 
-	private JasperReport createFooterSubreport() throws Exception {
+	/**
+	 * Creates a dynamic reports and compiles it in order to be used
+	 * as a subreport
+	 * @return
+	 * @throws Exception
+	 */
+	private JasperReport createSubreport2() throws Exception {
 		FastReportBuilder rb = new FastReportBuilder();
 		DynamicReport dr = rb
 		.addColumn("Area", "name", String.class.getName(), 100)
@@ -172,31 +192,7 @@ public class ConcatenatedReportTest extends TestCase {
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}
 
-	public void testReport() {
-	try {
-		DynamicReport dr = buildReport();
-		Collection dummyCollection = new ArrayList(); 
-		DummyObject dummyObject = getDummyObject();
-		dummyCollection.add(dummyObject);
-		
-		JRDataSource ds = new JRBeanCollectionDataSource(dummyCollection);
-		JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds,params);
-		ReportExporter.exportReport(jp, System.getProperty("user.dir")+ "/target/ConcatenatedReportTest.pdf");
-		JasperViewer.viewReport(jp);
-//		JasperDesignViewer.viewReportDesign(DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager()));
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-}
-
-	private DummyObject getDummyObject() {
-		DummyObject dum = new DummyObject();
-		dum.setData1(TestRepositoryProducts.getDummyCollection());
-		dum.setData2(Product.statistics_);
-		return dum;
-	}
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		ConcatenatedReportTest test = new ConcatenatedReportTest();
 		test.testReport();
 	}

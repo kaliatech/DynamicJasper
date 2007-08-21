@@ -431,7 +431,7 @@ public class ClassicLayoutManager extends AbstractLayoutManager {
 			
 			//the subreport design
 			JRDesignExpression srExpression = new JRDesignExpression();
-			String paramname = "subreport_" + position + "_" + getReport().getColumns().indexOf(columnsGroup.getColumnToGroupBy()) + "_" + footerSubreportsList.indexOf(sr);
+			String paramname = "subreport_" + position + "_" + getReport().getColumnsGroups().indexOf(columnsGroup) + "_" + footerSubreportsList.indexOf(sr);
 			((DynamicJasperDesign)getDesign()).getParametersWithValues().put(paramname, sr.getReport());
 			srExpression.setText("("+JasperReport.class.getName()+")$P{REPORT_PARAMETERS_MAP}.get( \""+ paramname +"\" )");
 			srExpression.setValueClass(JasperReport.class);
