@@ -175,6 +175,7 @@ API.
 				          <templateDirectory>${basedir}/src/config/</templateDirectory>
 <!--				          <templatCe>maven-site-tables.vm</template>-->
 				          <template>maven-site.vm</template>
+				          <locales>en,es</locales>
 				        </configuration>
 				      </plugin>					
 
