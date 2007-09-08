@@ -190,7 +190,7 @@ public class SubReportBuilderTest extends TestCase {
 		JRDataSource ds = new JRBeanCollectionDataSource(dummyCollection);
 		JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds, params);
 		ReportExporter.exportReport(jp, System.getProperty("user.dir") + "/target/SubReportBuilderTest.pdf");
-		JasperViewer.viewReport(jp);
+		//JasperViewer.viewReport(jp);
 	}
 	
 	/**

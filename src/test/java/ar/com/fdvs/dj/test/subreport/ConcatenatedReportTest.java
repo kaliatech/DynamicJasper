@@ -148,7 +148,7 @@ public class ConcatenatedReportTest extends TestCase {
 			JRDataSource ds = new JRBeanCollectionDataSource(mainDataSource);
 			JasperPrint jp = DynamicJasperHelper.generateJasperPrint(dr, new ClassicLayoutManager(), ds, params);
 			ReportExporter.exportReport(jp, System.getProperty("user.dir") + "/target/ConcatenatedReportTest.pdf");
-			JasperViewer.viewReport(jp);
+			//JasperViewer.viewReport(jp);
 	}	
 
 	/**
