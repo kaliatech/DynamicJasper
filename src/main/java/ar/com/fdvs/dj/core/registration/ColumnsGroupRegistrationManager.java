@@ -41,16 +41,16 @@ import net.sf.jasperreports.engine.design.JRDesignGroup;
 import net.sf.jasperreports.engine.design.JRDesignVariable;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
 import ar.com.fdvs.dj.domain.entities.Entity;
-import ar.com.fdvs.dj.domain.entities.columns.GlobalGroupColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJGlobalGroupColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
 
 /**
- * Manager invoked to register groups of columns. A ColumnsGroup is read and </br>
+ * Manager invoked to register groups of columns. A DJGroup is read and </br>
  * transformed into a JRDesignGroup.</br>
  * </br>
- * @see ColumnsGroup
+ * @see DJGroup
  */
 public class ColumnsGroupRegistrationManager extends AbstractEntityRegistrationManager {
 
@@ -62,7 +62,7 @@ public class ColumnsGroupRegistrationManager extends AbstractEntityRegistrationM
 
 	protected void registerEntity(Entity entity) {
 		log.debug("registering group...");
-		ColumnsGroup columnsGroup = (ColumnsGroup) entity;
+		DJGroup columnsGroup = (DJGroup) entity;
 		try {
 			JRDesignGroup group = (JRDesignGroup)transformEntity(columnsGroup);
 			getDjd().addGroup(group);
@@ -74,14 +74,14 @@ public class ColumnsGroupRegistrationManager extends AbstractEntityRegistrationM
 		}
 	}
 
-	//PropertyColumn only can be used for grouping (not OperationColumn)
+	//DJPropertyColumn only can be used for grouping (not DJOperationColumn)
 	protected Object transformEntity(Entity entity) {
 		log.debug("transforming group...");
-		ColumnsGroup columnsGroup = (ColumnsGroup) entity;
-		PropertyColumn column = columnsGroup.getColumnToGroupBy();
+		DJGroup columnsGroup = (DJGroup) entity;
+		DJPropertyColumn column = columnsGroup.getColumnToGroupBy();
 		JRDesignGroup group = new JRDesignGroup();
 
-		if (column instanceof GlobalGroupColumn){
+		if (column instanceof DJGlobalGroupColumn){
 			group.setName("global_column_" + getDynamicReport().getColumnsGroups().indexOf(columnsGroup));
 		} else {
 			group.setName(column.getTitle());

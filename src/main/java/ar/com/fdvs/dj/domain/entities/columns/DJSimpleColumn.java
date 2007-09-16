@@ -27,26 +27,20 @@
  *
  */
 
-package ar.com.fdvs.dj.domain;
+package ar.com.fdvs.dj.domain.entities.columns;
 
 /**
- * Numerical operations that can be applied by an OperationColumn.</br>
- * </br>
- * @see OperationColumn
+ * The simplest concrete Column in DJ. It just maps directly to a property </br>
+ * from the element of the data source
  */
-public class ColumnOperation {
+public class DJSimpleColumn extends DJPropertyColumn {
 
-	public static ColumnOperation SUM = new ColumnOperation("+");
-	public static ColumnOperation SUBSTRACT = new ColumnOperation("-");
-
-	private String value;
-
-	private ColumnOperation(String value) {
-		this.value = value;
+	public String getTextForExpression() {
+		return "$F{" + getColumnProperty().getProperty() + "}";
 	}
 
-	public String getValue() {
-		return value;
+	public String getValueClassNameForExpression() {
+		return getColumnProperty().getValueClassName();
 	}
 
 }

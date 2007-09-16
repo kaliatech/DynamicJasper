@@ -55,16 +55,16 @@ public class DynamicReportOptions {
 	private Page page = Page.Page_A4_Portrait();
 
 	private boolean printBackgroundOnOddRows = false;
-	private Style oddRowBackgroundStyle = new Style("swfaultOddRowStyle");
+	private DJStyle oddRowBackgroundStyle = new DJStyle("swfaultOddRowStyle");
 	private Integer titleHeight =  new Integer(30);
 	private boolean titleNewPage =  false;
 	private Integer subtitleHeight = new Integer(15);
 	
-	private Style defaultHeaderStyle = new Style("defaultHeaderStyle");
-	private Style defaultDetailStyle = new Style("defaultDetailStyle");
-	private Style defaultFooterStyle = new Style("defaultFooterStyle");
-	private Style defaultGroupHeaderStyle = new Style("defaultGroupHeaderStyle");
-	private Style defaultGroupFooterStyle = new Style("defaultGroupFooterStyle");
+	private DJStyle defaultHeaderStyle = new DJStyle("defaultHeaderStyle");
+	private DJStyle defaultDetailStyle = new DJStyle("defaultDetailStyle");
+	private DJStyle defaultFooterStyle = new DJStyle("defaultFooterStyle");
+	private DJStyle defaultGroupHeaderStyle = new DJStyle("defaultGroupHeaderStyle");
+	private DJStyle defaultGroupFooterStyle = new DJStyle("defaultGroupFooterStyle");
 	
 	/**
 	 * Key: Byte (ImageBanner.ALIGN_RIGHT, ImageBanner.ALIGN_LEFT, ImageBanner.ALIGN_CENTER)<br/>
@@ -189,11 +189,11 @@ public class DynamicReportOptions {
 		return usableWidth / getColumnsPerPage().intValue();
 	}
 
-	public Style getOddRowBackgroundStyle() {
+	public DJStyle getOddRowBackgroundStyle() {
 		return oddRowBackgroundStyle;
 	}
 
-	public void setOddRowBackgroundStyle(Style oddRowBackgroundStyle) {
+	public void setOddRowBackgroundStyle(DJStyle oddRowBackgroundStyle) {
 		this.oddRowBackgroundStyle = oddRowBackgroundStyle;
 	}
 
@@ -225,43 +225,43 @@ public class DynamicReportOptions {
 		return firstPageImageBanners;
 	}
 
-	public Style getDefaultDetailStyle() {
+	public DJStyle getDefaultDetailStyle() {
 		return defaultDetailStyle;
 	}
 
-	public void setDefaultDetailStyle(Style defaultDetailStyle) {
+	public void setDefaultDetailStyle(DJStyle defaultDetailStyle) {
 		this.defaultDetailStyle = defaultDetailStyle;
 	}
 
-	public Style getDefaultFooterStyle() {
+	public DJStyle getDefaultFooterStyle() {
 		return defaultFooterStyle;
 	}
 
-	public void setDefaultFooterStyle(Style defaultFooterStyle) {
+	public void setDefaultFooterStyle(DJStyle defaultFooterStyle) {
 		this.defaultFooterStyle = defaultFooterStyle;
 	}
 
-	public Style getDefaultHeaderStyle() {
+	public DJStyle getDefaultHeaderStyle() {
 		return defaultHeaderStyle;
 	}
 
-	public void setDefaultHeaderStyle(Style defaultHeaderStyle) {
+	public void setDefaultHeaderStyle(DJStyle defaultHeaderStyle) {
 		this.defaultHeaderStyle = defaultHeaderStyle;
 	}
 
-	public Style getDefaultGroupHeaderStyle() {
+	public DJStyle getDefaultGroupHeaderStyle() {
 		return defaultGroupHeaderStyle;
 	}
 
-	public void setDefaultGroupHeaderStyle(Style defaultGroupHeaderStyle) {
+	public void setDefaultGroupHeaderStyle(DJStyle defaultGroupHeaderStyle) {
 		this.defaultGroupHeaderStyle = defaultGroupHeaderStyle;
 	}
 
-	public Style getDefaultGroupFooterStyle() {
+	public DJStyle getDefaultGroupFooterStyle() {
 		return defaultGroupFooterStyle;
 	}
 
-	public void setDefaultGroupFooterStyle(Style defaultGroupFooterStyle) {
+	public void setDefaultGroupFooterStyle(DJStyle defaultGroupFooterStyle) {
 		this.defaultGroupFooterStyle = defaultGroupFooterStyle;
 	}
 

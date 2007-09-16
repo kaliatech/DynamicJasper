@@ -29,55 +29,55 @@
 
 package ar.com.fdvs.dj.domain.entities;
 
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.DJOperation;
+import ar.com.fdvs.dj.domain.DJStyle;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 
 /**
  * Entity used to handle global and group variables that represent the value of </br>
  * an operation applied to the corresponding rows.</br>
  * </br>
- * @see ColumnsGroupVariableOperation
+ * @see DJOperation
  */
-public class ColumnsGroupVariable implements Entity {
+public class DJGroupVariable implements Entity {
 
-	private AbstractColumn columnToApplyOperation;
-	private ColumnsGroupVariableOperation operation;
-	private Style style;
+	private DJColumn columnToApplyOperation;
+	private DJOperation operation;
+	private DJStyle style;
 
-	public ColumnsGroupVariable(AbstractColumn columnToApplyOperation, ColumnsGroupVariableOperation operation) {
+	public DJGroupVariable(DJColumn columnToApplyOperation, DJOperation operation) {
 		this.columnToApplyOperation = columnToApplyOperation;
 		this.operation = operation;
 	}
 
-	public ColumnsGroupVariable(AbstractColumn columnToApplyOperation, ColumnsGroupVariableOperation operation, Style style) {
+	public DJGroupVariable(DJColumn columnToApplyOperation, DJOperation operation, DJStyle style) {
 		this.columnToApplyOperation = columnToApplyOperation;
 		this.operation = operation;
 		this.style = style;
 	}
 
-	public Style getStyle() {
+	public DJStyle getStyle() {
 		return style;
 	}
 
-	public void setStyle(Style style) {
+	public void setStyle(DJStyle style) {
 		this.style = style;
 	}
 
 
-	public AbstractColumn getColumnToApplyOperation() {
+	public DJColumn getColumnToApplyOperation() {
 		return columnToApplyOperation;
 	}
 
-	public void setColumnToApplyOperation(AbstractColumn columnToApplyOperation) {
+	public void setColumnToApplyOperation(DJColumn columnToApplyOperation) {
 		this.columnToApplyOperation = columnToApplyOperation;
 	}
 
-	public ColumnsGroupVariableOperation getOperation() {
+	public DJOperation getOperation() {
 		return operation;
 	}
 
-	public void setOperation(ColumnsGroupVariableOperation operation) {
+	public void setOperation(DJOperation operation) {
 		this.operation = operation;
 	}
 

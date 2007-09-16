@@ -29,18 +29,38 @@
 
 package ar.com.fdvs.dj.domain.entities.columns;
 
+import ar.com.fdvs.dj.domain.DJOperation;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
+
 /**
- * The simplest concrete Column in DJ. It just maps directly to a property </br>
- * from the obtained result set.
+ * Column created to handle global variables.
  */
-public class SimpleColumn extends PropertyColumn {
+public class DJGlobalGroupColumn extends DJPropertyColumn {
+
+	public DJGlobalGroupColumn() {
+		DJColumnProperty columnProperty = new DJColumnProperty("global", String.class.getName());
+		setTitle("global");
+		setColumnProperty(columnProperty);
+	}
+
+	public String getGroupVariableName(String type, String columnToGroupByProperty) {
+		return null;
+	}
+
+	public String getInitialExpression(DJOperation op) {
+		return null;
+	}
 
 	public String getTextForExpression() {
-		return "$F{" + getColumnProperty().getProperty() + "}";
+		return "\"" + getTitle() + "\"";
 	}
 
 	public String getValueClassNameForExpression() {
-		return getColumnProperty().getValueClassName();
+		return String.class.getName();
+	}
+
+	public String getVariableClassName(DJOperation op) {
+		return null;
 	}
 
 }

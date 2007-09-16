@@ -39,7 +39,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.design.JRDesignParameter;
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.core.layout.AbstractLayoutManager;
-import ar.com.fdvs.dj.domain.CustomExpression;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.entities.Entity;
@@ -112,10 +112,10 @@ public abstract class AbstractEntityRegistrationManager implements DJConstants {
 	 */
 	protected abstract Object transformEntity(Entity entity);
 
-	protected void registerExpressionColumnParameter(String property, CustomExpression customExpression) {
+	protected void registerExpressionColumnParameter(String property, DJCustomExpression customExpression) {
 		JRDesignParameter dparam = new JRDesignParameter();
 		dparam.setName(property);
-		dparam.setValueClassName(CustomExpression.class.getName());
+		dparam.setValueClassName(DJCustomExpression.class.getName());
 		log.debug("Registering customExpression parameter" + property );
 		try {
 			getDjd().addParameter(dparam);

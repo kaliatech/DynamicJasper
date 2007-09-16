@@ -39,20 +39,20 @@ import net.sf.jasperreports.engine.design.JRDesignField;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ar.com.fdvs.dj.domain.ColumnProperty;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.entities.Entity;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.ExpressionColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
-import ar.com.fdvs.dj.domain.entities.columns.SimpleColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJExpressionColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJSimpleColumn;
 
 /**
- * Manager invoked to register columns. An AbstractColumn is read and </br>
+ * Manager invoked to register columns. An DJColumn is read and </br>
  * transformed into a JRDesignField.</br>
  * </br>
- * @see AbstractColumn
+ * @see DJColumn
  */
 public class ColumnRegistrationManager extends AbstractEntityRegistrationManager {
 
@@ -71,7 +71,7 @@ public class ColumnRegistrationManager extends AbstractEntityRegistrationManager
 	protected void registerEntity(Entity entity) {
 //		log.debug("registering column...");
 		//A default name is setted if the user didn't specify one.
-		AbstractColumn column = (AbstractColumn)entity;
+		DJColumn column = (DJColumn)entity;
 		if (column.getName() == null){
 			column.setName(COLUMN_NAME_PREFIX + colCounter++ );
 		}
@@ -79,21 +79,21 @@ public class ColumnRegistrationManager extends AbstractEntityRegistrationManager
 			new ConditionalStylesRegistrationManager(getDjd(),getDynamicReport(),column.getName()).registerEntities(column.getConditionalStyles());
 		}
 
-		if (entity instanceof PropertyColumn) {
+		if (entity instanceof DJPropertyColumn) {
 			try {
 				//addField() will throw an exception only if the column has already been registered.
-				PropertyColumn propertyColumn = ((PropertyColumn)entity);
+				DJPropertyColumn propertyColumn = ((DJPropertyColumn)entity);
 				log.debug("registering column " + column.getName());
-				if ( propertyColumn.getColumnProperty() != null && !(entity instanceof ExpressionColumn)){
+				if ( propertyColumn.getColumnProperty() != null && !(entity instanceof DJExpressionColumn)){
 					getDjd().addField((JRField)transformEntity(entity));
 				}
-				if (entity instanceof ExpressionColumn) {
+				if (entity instanceof DJExpressionColumn) {
 					//The Custom Expression parameter must be registered
-					ExpressionColumn expressionColumn = (ExpressionColumn) entity;
+					DJExpressionColumn expressionColumn = (DJExpressionColumn) entity;
 					ArrayList l = new ArrayList(getColumns());
 					for (Iterator iter = getDynamicReport().getFields().iterator(); iter.hasNext();) {
-						ColumnProperty columnProperty = (ColumnProperty) iter.next();
-						SimpleColumn simpleColumn = new SimpleColumn();
+						DJColumnProperty columnProperty = (DJColumnProperty) iter.next();
+						DJSimpleColumn simpleColumn = new DJSimpleColumn();
 						simpleColumn.setColumnProperty(columnProperty);
 						l.add(simpleColumn);
 						
@@ -108,7 +108,7 @@ public class ColumnRegistrationManager extends AbstractEntityRegistrationManager
 	}
 
 	protected Object transformEntity(Entity entity) {
-		PropertyColumn propertyColumn = (PropertyColumn) entity;
+		DJPropertyColumn propertyColumn = (DJPropertyColumn) entity;
 		JRDesignField field = new JRDesignField();
 		field.setName(propertyColumn.getColumnProperty().getProperty());
 		field.setValueClassName(propertyColumn.getColumnProperty()

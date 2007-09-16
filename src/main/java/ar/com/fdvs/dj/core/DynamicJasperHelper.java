@@ -66,13 +66,13 @@ import org.apache.commons.logging.LogFactory;
 import ar.com.fdvs.dj.core.layout.AbstractLayoutManager;
 import ar.com.fdvs.dj.core.registration.ColumnRegistrationManager;
 import ar.com.fdvs.dj.core.registration.ColumnsGroupRegistrationManager;
-import ar.com.fdvs.dj.domain.ColumnProperty;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.DynamicReportOptions;
 import ar.com.fdvs.dj.domain.constants.Page;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 
 
 /**
@@ -106,7 +106,7 @@ public final class DynamicJasperHelper {
 
 	private static void registerOtherFields(DynamicJasperDesign jd, List fields) {
 		for (Iterator iter = fields.iterator(); iter.hasNext();) {
-			ColumnProperty element = (ColumnProperty) iter.next();
+			DJColumnProperty element = (DJColumnProperty) iter.next();
 			JRDesignField field = new JRDesignField();
 			field.setValueClassName(element.getValueClassName());
 			field.setName(element.getProperty());
@@ -317,10 +317,10 @@ public final class DynamicJasperHelper {
 		return jr;
 	}
 
-	public final static ColumnsGroup getColumnGroup(AbstractColumn col, List groups) {
+	public final static DJGroup getColumnGroup(DJColumn col, List groups) {
 		Iterator it = groups.iterator();
 		while (it.hasNext()) {
-			ColumnsGroup group = (ColumnsGroup) it.next();
+			DJGroup group = (DJGroup) it.next();
 			if (group.getColumnToGroupBy().equals(col))
 				return group;
 		}
@@ -330,7 +330,7 @@ public final class DynamicJasperHelper {
 	public final static boolean existsGroupWithColumnNames(List groups) {
 		Iterator it = groups.iterator();
 		while (it.hasNext()) {
-			ColumnsGroup group = (ColumnsGroup) it.next();
+			DJGroup group = (DJGroup) it.next();
 			if (group.getLayout().isShowColumnNames())
 				return true;
 		}

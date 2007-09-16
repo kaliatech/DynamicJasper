@@ -29,32 +29,32 @@
 
 package ar.com.fdvs.dj.domain.entities.columns;
 
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.ColumnProperty;
-import ar.com.fdvs.dj.domain.CustomExpression;
+import ar.com.fdvs.dj.domain.DJOperation;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 
 /**
  * Basic abstract column type representing a property from the obtained </br>
  * result set. Only subclasses of this class can be grouped.
  */
-public abstract class PropertyColumn extends AbstractColumn {
+public abstract class DJPropertyColumn extends DJColumn {
 
-	private ColumnProperty columnProperty;
-	private CustomExpression expressionToGroupBy;
+	private DJColumnProperty columnProperty;
+	private DJCustomExpression expressionToGroupBy;
 
-	public ColumnProperty getColumnProperty() {
+	public DJColumnProperty getColumnProperty() {
 		return columnProperty;
 	}
 
-	public void setColumnProperty(ColumnProperty columnProperty) {
+	public void setColumnProperty(DJColumnProperty columnProperty) {
 		this.columnProperty = columnProperty;
 	}
 
-	public CustomExpression getExpressionToGroupBy() {
+	public DJCustomExpression getExpressionToGroupBy() {
 		return expressionToGroupBy;
 	}
 
-	public void setExpressionToGroupBy(CustomExpression expressionToGroupBy) {
+	public void setExpressionToGroupBy(DJCustomExpression expressionToGroupBy) {
 		this.expressionToGroupBy = expressionToGroupBy;
 	}
 
@@ -62,17 +62,17 @@ public abstract class PropertyColumn extends AbstractColumn {
 		return "variable-"+type+"_"+columnToGroupByProperty+"_"+getColumnProperty().getProperty();
 	}
 
-	public String getVariableClassName(ColumnsGroupVariableOperation op) {
-		if (op == ColumnsGroupVariableOperation.COUNT)
+	public String getVariableClassName(DJOperation op) {
+		if (op == DJOperation.COUNT)
 			return Long.class.getName();
 		else
 			return getColumnProperty().getValueClassName();
 	}
 
-	public String getInitialExpression(ColumnsGroupVariableOperation op) {
-		if (op == ColumnsGroupVariableOperation.COUNT)
+	public String getInitialExpression(DJOperation op) {
+		if (op == DJOperation.COUNT)
 			return "new java.lang.Long(\"0\")";
-		else if (op == ColumnsGroupVariableOperation.SUM)
+		else if (op == DJOperation.SUM)
 			return "new " + getColumnProperty().getValueClassName()+"(\"0\")";
 		else return null;
 	}

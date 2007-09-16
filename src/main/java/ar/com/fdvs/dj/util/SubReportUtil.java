@@ -9,7 +9,7 @@ import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JRDesignExpression;
 import ar.com.fdvs.dj.core.DJConstants;
-import ar.com.fdvs.dj.domain.entities.Subreport;
+import ar.com.fdvs.dj.domain.entities.DJSubreport;
 
 public class SubReportUtil {
 	
@@ -25,7 +25,7 @@ public class SubReportUtil {
 	 * @param sr
 	 * @return
 	 */
-	public static JRDesignExpression getParameterExpression(Subreport sr) {
+	public static JRDesignExpression getParameterExpression(DJSubreport sr) {
 		JRDesignExpression exp = new JRDesignExpression();
 		exp.setValueClassName(java.util.Map.class.getName());
 		if (sr.isUseParentReportParameters()){
@@ -54,7 +54,7 @@ public class SubReportUtil {
 	 * @param sr
 	 * @return
 	 */
-	public static JRExpression getDataSourceExpression(Subreport sr) {
+	public static JRExpression getDataSourceExpression(DJSubreport sr) {
 		JRDesignExpression exp = new JRDesignExpression();
 		exp.setValueClass(JRDataSource.class);
 		
@@ -68,7 +68,7 @@ public class SubReportUtil {
 		return exp;
 	}
 
-	private static String getDataSourceTypeStr(Subreport sr) {
+	private static String getDataSourceTypeStr(DJSubreport sr) {
 		//TODO Complete all other possible types
 		String dsType = "(";
 		if (DJConstants.DATA_SOURCE_TYPE_COLLECTION == sr.getDataSourceType()){

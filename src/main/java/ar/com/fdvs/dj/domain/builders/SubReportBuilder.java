@@ -3,13 +3,13 @@ package ar.com.fdvs.dj.domain.builders;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperReport;
 import ar.com.fdvs.dj.core.DJConstants;
-import ar.com.fdvs.dj.domain.entities.Subreport;
+import ar.com.fdvs.dj.domain.entities.DJSubreport;
 
 public class SubReportBuilder {
 
-	private Subreport subreport = new Subreport();
+	private DJSubreport subreport = new DJSubreport();
 	
-	public Subreport build(){
+	public DJSubreport build(){
 		return subreport;
 	}
 	

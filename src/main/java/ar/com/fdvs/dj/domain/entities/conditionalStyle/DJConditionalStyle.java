@@ -27,20 +27,45 @@
  *
  */
 
-package ar.com.fdvs.dj.domain;
+package ar.com.fdvs.dj.domain.entities.conditionalStyle;
+
+import ar.com.fdvs.dj.domain.DJCustomExpression;
+import ar.com.fdvs.dj.domain.DJStyle;
+import ar.com.fdvs.dj.domain.entities.Entity;
 
 /**
- * Powerful interface. The idea behind this is that anybody could extend </br>
- * this class and redefine the evaluate method to show different results in a cell. </br>
- * Example: date formatting, money formatting, string trimming, etc. </br>
- * </br>
- * @see StatusLightCondition
- * </br>
+ * Entity used to handle Conditional style.
  */
-public interface CustomExpression {
+public class DJConditionalStyle implements Entity {
 
-	public static final String EVAL_METHOD_NAME = "evaluate";
+	private DJCustomExpression condition;
+	private DJStyle style;
 
-	public Object evaluate(Object object);
+	//Internal condition name. ColumnName_style_ConditionNumber
+	private String name;
+
+	public DJConditionalStyle(DJCustomExpression condition, DJStyle style) {
+		this.condition = condition;
+		this.style = style;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public DJCustomExpression getCondition() {
+		return condition;
+	}
+	public void setCondition(DJCustomExpression condition) {
+		this.condition = condition;
+	}
+	public DJStyle getStyle() {
+		return style;
+	}
+	public void setStyle(DJStyle style) {
+		this.style = style;
+	}
 
 }

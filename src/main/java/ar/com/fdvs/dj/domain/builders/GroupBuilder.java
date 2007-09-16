@@ -31,23 +31,23 @@ package ar.com.fdvs.dj.domain.builders;
 
 import java.util.Iterator;
 
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJOperation;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.constants.GroupLayout;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
-import ar.com.fdvs.dj.domain.entities.Subreport;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.DJGroupVariable;
+import ar.com.fdvs.dj.domain.entities.DJSubreport;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
 
 /**
  * Builder created to give users a friendly way of adding groups to a report.</br>
  * </br>
  * Usage example: </br>
  * GroupBuilder gb1 = new GroupBuilder();
- * ColumnsGroup g1 = gb1.addCriteriaColumn((PropertyColumn) columnState)</br>
- * .addFooterVariable(columnAmount,ColumnsGroupVariableOperation.SUM)</br>
- * .addFooterVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)</br>
+ * DJGroup g1 = gb1.addCriteriaColumn((DJPropertyColumn) columnState)</br>
+ * .addFooterVariable(columnAmount,DJOperation.SUM)</br>
+ * .addFooterVariable(columnaQuantity,DJOperation.SUM)</br>
  * .addGroupLayout(GroupLayout.VALUE_IN_HEADER_WITH_COLNAMES)</br>
  * .build();</br>
  * </br>
@@ -56,21 +56,21 @@ import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
  */
 public class GroupBuilder {
 
-	private ColumnsGroup group = new ColumnsGroup();
+	private DJGroup group = new DJGroup();
 	
-	private Style defaultFooterVariableStyle;
-	private Style defaultHeaderVariableStyle;
+	private DJStyle defaultFooterVariableStyle;
+	private DJStyle defaultHeaderVariableStyle;
 
-	public ColumnsGroup build(){
+	public DJGroup build(){
 		//Apply Styles if any (for variables)
 		for (Iterator iterator = group.getHeaderVariables().iterator(); iterator.hasNext();) {
-			ColumnsGroupVariable var = (ColumnsGroupVariable) iterator.next();
+			DJGroupVariable var = (DJGroupVariable) iterator.next();
 			if (defaultHeaderVariableStyle != null)
 				var.setStyle(defaultHeaderVariableStyle);
 		}
 		
 		for (Iterator iterator = group.getFooterVariables().iterator(); iterator.hasNext();) {
-			ColumnsGroupVariable var = (ColumnsGroupVariable) iterator.next();
+			DJGroupVariable var = (DJGroupVariable) iterator.next();
 			if (defaultFooterVariableStyle != null)
 				var.setStyle(defaultFooterVariableStyle);
 		}
@@ -78,32 +78,32 @@ public class GroupBuilder {
 		return group;
 	}
 
-	public GroupBuilder addCriteriaColumn(PropertyColumn column) {
+	public GroupBuilder addCriteriaColumn(DJPropertyColumn column) {
 		group.setColumnToGroupBy(column);
 		return this;
 	}
 
-	public GroupBuilder addHeaderVariable(ColumnsGroupVariable variable) {
+	public GroupBuilder addHeaderVariable(DJGroupVariable variable) {
 		group.getHeaderVariables().add(variable);
 		return this;
 	}
 
-	public GroupBuilder addHeaderVariable(AbstractColumn column, ColumnsGroupVariableOperation operation) {
-		group.getHeaderVariables().add(new ColumnsGroupVariable(column,operation));
+	public GroupBuilder addHeaderVariable(DJColumn column, DJOperation operation) {
+		group.getHeaderVariables().add(new DJGroupVariable(column,operation));
 		return this;
 	}
 
-	public GroupBuilder addFooterVariable(ColumnsGroupVariable variable) {
+	public GroupBuilder addFooterVariable(DJGroupVariable variable) {
 		group.getFooterVariables().add(variable);
 		return this;
 	}
 
-	public GroupBuilder addFooterVariable(AbstractColumn column3, ColumnsGroupVariableOperation operation) {
-		group.getFooterVariables().add(new ColumnsGroupVariable(column3,operation));
+	public GroupBuilder addFooterVariable(DJColumn column3, DJOperation operation) {
+		group.getFooterVariables().add(new DJGroupVariable(column3,operation));
 		return this;
 	}
-	public GroupBuilder addFooterVariable(AbstractColumn column3, ColumnsGroupVariableOperation operation, Style style) {
-		group.getFooterVariables().add(new ColumnsGroupVariable(column3,operation,style));
+	public GroupBuilder addFooterVariable(DJColumn column3, DJOperation operation, DJStyle style) {
+		group.getFooterVariables().add(new DJGroupVariable(column3,operation,style));
 		return this;
 	}
 
@@ -122,22 +122,22 @@ public class GroupBuilder {
 		return this;
 	}
 
-	public GroupBuilder addDefaultFooterVariableStyle(Style defaultFooterVariableStyle) {
+	public GroupBuilder addDefaultFooterVariableStyle(DJStyle defaultFooterVariableStyle) {
 		this.defaultFooterVariableStyle = defaultFooterVariableStyle;
 		return this;
 	}
 
-	public GroupBuilder addDefaultHeaderVariableStyle(Style defaultHeaderVariableStyle) {
+	public GroupBuilder addDefaultHeaderVariableStyle(DJStyle defaultHeaderVariableStyle) {
 		this.defaultHeaderVariableStyle = defaultHeaderVariableStyle;
 		return this;
 	}
 
-	public GroupBuilder addHeaderSubreport(Subreport subreport) {
+	public GroupBuilder addHeaderSubreport(DJSubreport subreport) {
 		group.getHeaderSubreports().add(subreport);
 		return this;
 	}
 
-	public GroupBuilder addFooterSubreport(Subreport subreport) {
+	public GroupBuilder addFooterSubreport(DJSubreport subreport) {
 		group.getFooterSubreports().add(subreport);
 		return this;
 	}

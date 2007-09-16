@@ -34,21 +34,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import ar.com.fdvs.dj.domain.ColumnOperation;
-import ar.com.fdvs.dj.domain.ColumnProperty;
-import ar.com.fdvs.dj.domain.CustomExpression;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.ExpressionColumn;
-import ar.com.fdvs.dj.domain.entities.columns.OperationColumn;
-import ar.com.fdvs.dj.domain.entities.columns.SimpleColumn;
-import ar.com.fdvs.dj.domain.entities.conditionalStyle.ConditionalStyle;
+import ar.com.fdvs.dj.domain.DJColumnOperation;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
+import ar.com.fdvs.dj.domain.DJStyle;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJExpressionColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJOperationColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJSimpleColumn;
+import ar.com.fdvs.dj.domain.entities.conditionalStyle.DJConditionalStyle;
 
 /**
  * Builder created to give users a friendly way of adding columns to a report.</br>
  * </br>
  * Usage example: </br>
- * AbstractColumn columnState = ColumnBuilder.getInstance() </br>
+ * DJColumn columnState = ColumnBuilder.getInstance() </br>
  * .addColumnProperty("state", String.class.getName()) </br>
  * .addTitle("State").addWidth(new Integer(85)) </br>
  * .addStyle(detailStyle).addHeaderStyle(headerStyle).build(); </br>
@@ -61,24 +61,24 @@ public class ColumnBuilder {
 	private String title;
 	private Integer width = new Integer(50);
 	private Boolean fixedWidth = Boolean.FALSE;
-	private Style style;
-	private Style headerStyle;
-	private ColumnProperty columnProperty;
-	private CustomExpression customExpression;
-	private CustomExpression customExpressionToGroupBy;
+	private DJStyle style;
+	private DJStyle headerStyle;
+	private DJColumnProperty columnProperty;
+	private DJCustomExpression customExpression;
+	private DJCustomExpression customExpressionToGroupBy;
 	private String pattern;
 	private boolean printRepeatedValues = true;
 	private ArrayList conditionalStyles = new ArrayList();
-	private ColumnOperation operation;
+	private DJColumnOperation operation;
 	private List operationColumns;
 
 	public static ColumnBuilder getInstance(){
 		return new ColumnBuilder();
 	}
 
-	public AbstractColumn build() throws ColumnBuilderException{
+	public DJColumn build() throws ColumnBuilderException{
 		if (customExpression == null && columnProperty == null){
-			throw new ColumnBuilderException("Either a ColumnProperty or a CustomExpression must be present");
+			throw new ColumnBuilderException("Either a DJColumnProperty or a DJCustomExpression must be present");
 		}
 
 		if (columnProperty != null) {
@@ -90,33 +90,33 @@ public class ColumnBuilder {
 		}
 	}
 
-	private AbstractColumn buildExpressionColumn() {
-		ExpressionColumn column = new ExpressionColumn();
+	private DJColumn buildExpressionColumn() {
+		DJExpressionColumn column = new DJExpressionColumn();
 		populateCommonAttributes(column);
 		int random = new Random().nextInt();
-		column.setColumnProperty(new ColumnProperty("expressionColumn" + random,CustomExpression.class.getName()));
+		column.setColumnProperty(new DJColumnProperty("expressionColumn" + random,DJCustomExpression.class.getName()));
 		column.setExpression(customExpression);
 		column.setExpressionToGroupBy(customExpressionToGroupBy);
 		return column;
 	}
 
-	private AbstractColumn buildSimpleColumn() {
-		SimpleColumn column = new SimpleColumn();
+	private DJColumn buildSimpleColumn() {
+		DJSimpleColumn column = new DJSimpleColumn();
 		populateCommonAttributes(column);
 		column.setColumnProperty(columnProperty);
 		column.setExpressionToGroupBy(customExpressionToGroupBy);
 		return column;
 	}
 
-	private AbstractColumn buildOperationColumn() {
-		OperationColumn column = new OperationColumn();
+	private DJColumn buildOperationColumn() {
+		DJOperationColumn column = new DJOperationColumn();
 		populateCommonAttributes(column);
 		column.setColumnOperation(operation);
 		column.setColumns(operationColumns);
 		return column;
 	}
 
-	private void populateCommonAttributes(AbstractColumn column) {
+	private void populateCommonAttributes(DJColumn column) {
 		column.setTitle(title);
 		column.setWidth(width);
 		column.setPattern(pattern);
@@ -154,51 +154,51 @@ public class ColumnBuilder {
 		return this;
 	}
 
-	public ColumnBuilder addStyle(Style style) {
+	public ColumnBuilder addStyle(DJStyle style) {
 		this.style = style;
 		return this;
 	}
 
-	public ColumnBuilder addHeaderStyle(Style style) {
+	public ColumnBuilder addHeaderStyle(DJStyle style) {
 		this.headerStyle = style;
 		return this;
 	}
 
 	/**
 	 * Adds a property to the column being created.</br>
-	 * @param ColumnProperty columnProperty : BeanUtils like syntax allowed here
+	 * @param DJColumnProperty columnProperty : BeanUtils like syntax allowed here
 	 * @return ColumnBuilder
 	 */
-	public ColumnBuilder addColumnProperty(ColumnProperty columnProperty ){
+	public ColumnBuilder addColumnProperty(DJColumnProperty columnProperty ){
 		this.columnProperty = columnProperty;
 		return this;
 	}
 
 	/**
 	 * Adds a property to the column being created.</br>
-	 * @param ColumnProperty columnProperty : BeanUtils like syntax allowed here
+	 * @param DJColumnProperty columnProperty : BeanUtils like syntax allowed here
 	 * @param String valueClassName
 	 * @return ColumnBuilder
 	 */
 	public ColumnBuilder addColumnProperty(String propertyName, String valueClassName ){
-		ColumnProperty columnProperty = new ColumnProperty(propertyName,valueClassName);
+		DJColumnProperty columnProperty = new DJColumnProperty(propertyName,valueClassName);
 		this.columnProperty = columnProperty;
 		return this;
 	}
 
 	//FIXME This method should belong to the GroupBuilder.
-	public ColumnBuilder addCustomExpressionToGroupBy(CustomExpression customExpression){
+	public ColumnBuilder addCustomExpressionToGroupBy(DJCustomExpression customExpression){
 		this.customExpressionToGroupBy = customExpression;
 		return this;
 	}
 
-	public ColumnBuilder addCustomExpression(CustomExpression customExpression){
+	public ColumnBuilder addCustomExpression(DJCustomExpression customExpression){
 		this.customExpression = customExpression;
 		return this;
 	}
 
 
-	public ColumnBuilder addConditionalStyle(ConditionalStyle conditionalStyle) {
+	public ColumnBuilder addConditionalStyle(DJConditionalStyle conditionalStyle) {
 		this.conditionalStyles.add(conditionalStyle);
 		return this;
 	}
@@ -208,7 +208,7 @@ public class ColumnBuilder {
 		return this;
 	}
 
-	public ColumnBuilder addColumnOperation(ColumnOperation operation, AbstractColumn[] operationColumns) {
+	public ColumnBuilder addColumnOperation(DJColumnOperation operation, DJColumn[] operationColumns) {
 		this.operation = operation;
 		this.operationColumns = new ArrayList();
 		for (int i = 0; i < operationColumns.length; i++) {

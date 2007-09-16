@@ -27,46 +27,20 @@
  *
  */
 
-package ar.com.fdvs.dj.domain.entities.conditionalStyle;
-
-import ar.com.fdvs.dj.domain.CustomExpression;
+package ar.com.fdvs.dj.domain;
 
 /**
- * Special CustomExpression that complements very well with Conditionl Styles.
+ * Powerful interface. The idea behind this is that anybody could extend </br>
+ * this class and redefine the evaluate method to show different results in a cell. </br>
+ * Example: date formatting, money formatting, string trimming, etc. </br>
+ * </br>
+ * @see DJStatusLightCondition
+ * </br>
  */
-public class StatusLightCondition implements CustomExpression {
+public interface DJCustomExpression {
 
-	private Double min;
-	private Double max;
+	public static final String EVAL_METHOD_NAME = "evaluate";
 
-	private int mode = 0; // 0: x < min, 1: min < x < max, 2: x > max
-
-	public StatusLightCondition(Double min, Double max) {
-		this.min = min;
-		this.max = max;
-
-		if (min != null && max == null)
-			mode = 0;
-		else if (min != null && max != null)
-			mode = 1;
-		else if (min == null && max != null)
-			mode = 2;
-	}
-	
-	public Object evaluate(Object object) {
-		if (object == null)
-			return null;
-
-		Number number = (Number)object;
-
-		if (mode == 0){
-			return new Boolean(min.doubleValue() > number.doubleValue());
-		} else if (mode == 1) {
-			return new Boolean(min.doubleValue() <= number.doubleValue() && max.doubleValue() > number.doubleValue());
-		} else {
-			return new Boolean(max.doubleValue() <= number.doubleValue());
-		}
-
-	}
+	public Object evaluate(Object object);
 
 }

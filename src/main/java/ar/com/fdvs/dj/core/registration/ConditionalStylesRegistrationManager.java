@@ -33,15 +33,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
 import ar.com.fdvs.dj.domain.entities.Entity;
-import ar.com.fdvs.dj.domain.entities.conditionalStyle.ConditionalStyle;
+import ar.com.fdvs.dj.domain.entities.conditionalStyle.DJConditionalStyle;
 
 /**
  * Manager invoked to register conditional styles. </br>
- * A ConditionalStyle is read and it's expression is registered. </br>
+ * A DJConditionalStyle is read and it's expression is registered. </br>
  * </br>
- * @see ColumnsGroup
+ * @see DJGroup
  */
 public class ConditionalStylesRegistrationManager extends AbstractEntityRegistrationManager {
 
@@ -57,7 +57,7 @@ public class ConditionalStylesRegistrationManager extends AbstractEntityRegistra
 	protected void registerEntity(Entity entity) {
 		log.debug("registering conditional style...");
 		//The column names are already registered when we get here
-		ConditionalStyle condition = (ConditionalStyle) entity;
+		DJConditionalStyle condition = (DJConditionalStyle) entity;
 		String expressionName = columnName + "_style_" + counter;
 		condition.setName(expressionName);
 		registerExpressionColumnParameter(expressionName, condition.getCondition());

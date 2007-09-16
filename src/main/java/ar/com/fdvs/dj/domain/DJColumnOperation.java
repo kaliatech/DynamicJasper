@@ -27,45 +27,26 @@
  *
  */
 
-package ar.com.fdvs.dj.domain.entities.conditionalStyle;
-
-import ar.com.fdvs.dj.domain.CustomExpression;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.entities.Entity;
+package ar.com.fdvs.dj.domain;
 
 /**
- * Entity used to handle Conditional style.
+ * Numerical operations that can be applied by an DJOperationColumn.</br>
+ * </br>
+ * @see DJOperationColumn
  */
-public class ConditionalStyle implements Entity {
+public class DJColumnOperation {
 
-	private CustomExpression condition;
-	private Style style;
+	public static DJColumnOperation SUM = new DJColumnOperation("+");
+	public static DJColumnOperation SUBSTRACT = new DJColumnOperation("-");
 
-	//Internal condition name. ColumnName_style_ConditionNumber
-	private String name;
+	private String value;
 
-	public ConditionalStyle(CustomExpression condition, Style style) {
-		this.condition = condition;
-		this.style = style;
+	private DJColumnOperation(String value) {
+		this.value = value;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public CustomExpression getCondition() {
-		return condition;
-	}
-	public void setCondition(CustomExpression condition) {
-		this.condition = condition;
-	}
-	public Style getStyle() {
-		return style;
-	}
-	public void setStyle(Style style) {
-		this.style = style;
+
+	public String getValue() {
+		return value;
 	}
 
 }

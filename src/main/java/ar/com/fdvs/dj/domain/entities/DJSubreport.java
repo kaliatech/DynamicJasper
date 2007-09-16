@@ -1,10 +1,10 @@
 package ar.com.fdvs.dj.domain.entities;
 
 import ar.com.fdvs.dj.core.DJConstants;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import net.sf.jasperreports.engine.JasperReport;
 
-public class Subreport {
+public class DJSubreport {
 	
 	private JasperReport report;
 	
@@ -21,7 +21,7 @@ public class Subreport {
 	private int dataSourceType = DJConstants.DATA_SOURCE_TYPE_COLLECTION;
 	
 	
-	private Style style;
+	private DJStyle style;
 	
 	/**
 	 * By default true,
@@ -59,10 +59,10 @@ public class Subreport {
 	public void setUseParentReportParameters(boolean useParentReportParameters) {
 		this.useParentReportParameters = useParentReportParameters;
 	}
-	public Style getStyle() {
+	public DJStyle getStyle() {
 		return style;
 	}
-	public void setStyle(Style style) {
+	public void setStyle(DJStyle style) {
 		this.style = style;
 	}
 	public JasperReport getReport() {

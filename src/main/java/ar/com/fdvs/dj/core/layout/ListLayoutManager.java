@@ -32,7 +32,7 @@ package ar.com.fdvs.dj.core.layout;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 import net.sf.jasperreports.engine.design.JRDesignTextField;
 
 /**
@@ -53,7 +53,7 @@ public class ListLayoutManager extends AbstractLayoutManager {
 		super.startLayout();
 	}
 
-	protected void transformDetailBandTextField(AbstractColumn column, JRDesignTextField textField) {
+	protected void transformDetailBandTextField(DJColumn column, JRDesignTextField textField) {
 		log.debug("transforming detail band text field...");
 		textField.setPrintRepeatedValues(true);
 		try {

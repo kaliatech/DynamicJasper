@@ -31,26 +31,26 @@ package ar.com.fdvs.dj.domain.entities.columns;
 
 import java.util.Iterator;
 import java.util.List;
-import ar.com.fdvs.dj.domain.ColumnOperation;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
+import ar.com.fdvs.dj.domain.DJColumnOperation;
+import ar.com.fdvs.dj.domain.DJOperation;
 
 /**
  * Column created to handle numerical operations between two or more </br>
  * PropertyColumns.</br>
  * </br>
- * @see ColumnOperation
- * @see PropertyColumn
+ * @see DJColumnOperation
+ * @see DJPropertyColumn
  */
-public class OperationColumn extends AbstractColumn {
+public class DJOperationColumn extends DJColumn {
 
-	private ColumnOperation columnOperation;
+	private DJColumnOperation columnOperation;
 	private List columns;
 
-	public ColumnOperation getColumnOperation() {
+	public DJColumnOperation getColumnOperation() {
 		return columnOperation;
 	}
 
-	public void setColumnOperation(ColumnOperation columnOperation) {
+	public void setColumnOperation(DJColumnOperation columnOperation) {
 		this.columnOperation = columnOperation;
 	}
 
@@ -66,7 +66,7 @@ public class OperationColumn extends AbstractColumn {
 		StringBuffer exp = new StringBuffer();
 		for (Iterator iter = columns.iterator(); iter
 				.hasNext();) {
-			SimpleColumn col = (SimpleColumn) iter.next();
+			DJSimpleColumn col = (DJSimpleColumn) iter.next();
 			exp.append(" ((java.lang.Number)$F{" + col.getColumnProperty().getProperty()
 					+ "}).doubleValue() ");
 			if (iter.hasNext())
@@ -83,13 +83,13 @@ public class OperationColumn extends AbstractColumn {
 		return "variable-"+type+"_"+columnToGroupByProperty+"_"+columnOperation.getValue();
 	}
 
-	public String getVariableClassName(ColumnsGroupVariableOperation op) {
-		if (op == ColumnsGroupVariableOperation.COUNT)
+	public String getVariableClassName(DJOperation op) {
+		if (op == DJOperation.COUNT)
 			return Long.class.getName();
 		else return Number.class.getName();
 	}
 
-	public String getInitialExpression(ColumnsGroupVariableOperation op) {
+	public String getInitialExpression(DJOperation op) {
 		return "new java.lang.Long(\"0\")";
 	}
 

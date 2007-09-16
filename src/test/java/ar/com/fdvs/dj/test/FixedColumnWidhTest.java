@@ -40,27 +40,27 @@ import net.sf.jasperreports.view.JasperViewer;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 import ar.com.fdvs.dj.util.SortUtils;
 
 public class FixedColumnWidhTest extends TestCase {
 
 	public DynamicReport buildReport() throws Exception {
 
-		Style detailStyle = new Style(); 
+		DJStyle detailStyle = new DJStyle(); 
 			detailStyle.setBorder(Border.THIN);detailStyle.setBorderColor(Color.BLACK);
 //			detailStyle.setTransparency(Transparency.OPAQUE);
-		Style headerStyle = new Style(); headerStyle.setBackgroundColor(new Color(230,230,230));headerStyle.setTransparency(Transparency.OPAQUE);
+		DJStyle headerStyle = new DJStyle(); headerStyle.setBackgroundColor(new Color(230,230,230));headerStyle.setTransparency(Transparency.OPAQUE);
 
-		Style titleStyle = new Style();
-		Style subtitleStyle = new Style();
-		Style amountStyle = new Style(); amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
+		DJStyle titleStyle = new DJStyle();
+		DJStyle subtitleStyle = new DJStyle();
+		DJStyle amountStyle = new DJStyle(); amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
 
 		/**
 		 * Creates the DynamicReportBuilder and sets the basic options for
@@ -84,39 +84,39 @@ public class FixedColumnWidhTest extends TestCase {
 		 * column, the ColumnBuilder.getInstance() method returns a new instance
 		 * of the builder
 		 */
-		AbstractColumn columnState = ColumnBuilder.getInstance()		//creates a new instance of a ColumnBuilder
+		DJColumn columnState = ColumnBuilder.getInstance()		//creates a new instance of a ColumnBuilder
 			.addColumnProperty("state", String.class.getName())			//defines the field of the data source that this column will show, also its type
 			.addTitle("State")											//the title for the column
 			.addWidth(85)												//the width of the column		
-			.build();													//builds and return a new AbstractColumn
+			.build();													//builds and return a new DJColumn
 
 		//Create more columns
-		AbstractColumn columnBranch = ColumnBuilder.getInstance()
+		DJColumn columnBranch = ColumnBuilder.getInstance()
 			.addColumnProperty("branch", String.class.getName())
 			.addTitle("Branch").addWidth(85)
 			.build();
 
-		AbstractColumn columnaProductLine = ColumnBuilder.getInstance()
+		DJColumn columnaProductLine = ColumnBuilder.getInstance()
 			.addColumnProperty("productLine", String.class.getName())
 			.addTitle("Product Line").addWidth(250).addFixedWidth(true)
 			.build();
 
-		AbstractColumn columnaItem = ColumnBuilder.getInstance()
+		DJColumn columnaItem = ColumnBuilder.getInstance()
 			.addColumnProperty("item", String.class.getName())
 			.addTitle("Item").addWidth(85)
 			.build();
 
-		AbstractColumn columnCode = ColumnBuilder.getInstance()
+		DJColumn columnCode = ColumnBuilder.getInstance()
 			.addColumnProperty("id", Long.class.getName())
 			.addTitle("ID").addWidth(40)
 			.build();
 
-		AbstractColumn columnaCantidad = ColumnBuilder.getInstance()
+		DJColumn columnaCantidad = ColumnBuilder.getInstance()
 			.addColumnProperty("quantity", Long.class.getName())
 			.addTitle("Quantity").addWidth(80)
 			.build();
 
-		AbstractColumn columnAmount = ColumnBuilder.getInstance()
+		DJColumn columnAmount = ColumnBuilder.getInstance()
 			.addColumnProperty("amount", Float.class.getName())
 			.addTitle("Amount").addWidth(90)
 			.addFixedWidth(true) // <--- FIXED COLUMN WIDTH

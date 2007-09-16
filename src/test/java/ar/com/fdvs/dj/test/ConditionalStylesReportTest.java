@@ -45,7 +45,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
@@ -53,25 +53,25 @@ import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.conditionalStyle.ConditionalStyle;
-import ar.com.fdvs.dj.domain.entities.conditionalStyle.StatusLightCondition;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.conditionalStyle.DJConditionalStyle;
+import ar.com.fdvs.dj.domain.entities.conditionalStyle.DJStatusLightCondition;
 import ar.com.fdvs.dj.util.SortUtils;
 
 public class ConditionalStylesReportTest extends TestCase {
 
 	public DynamicReport buildReport() throws Exception {
 
-		Style detailStyle = new Style();
-		Style headerStyle = new Style();
+		DJStyle detailStyle = new DJStyle();
+		DJStyle headerStyle = new DJStyle();
 		headerStyle.setFont(Font.ARIAL_MEDIUM_BOLD); headerStyle.setBorder(Border.MEDIUM);
 		headerStyle.setHorizontalAlign(HorizontalAlign.CENTER); headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
 
-		Style titleStyle = new Style();
+		DJStyle titleStyle = new DJStyle();
 		titleStyle.setFont(new Font(18,Font._FONT_VERDANA,true));
-		Style amountStyle = new Style();
+		DJStyle amountStyle = new DJStyle();
 		amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
-		Style oddRowStyle = new Style();
+		DJStyle oddRowStyle = new DJStyle();
 		oddRowStyle.setBorder(Border.NO_BORDER);
 		Color veryLightGrey = new Color(230,230,230);
 		oddRowStyle.setBackgroundColor(veryLightGrey);oddRowStyle.setTransparency(Transparency.OPAQUE);
@@ -93,27 +93,27 @@ public class ConditionalStylesReportTest extends TestCase {
 			.addColumnsPerPage(new Integer(1))
 			.addColumnSpace(new Integer(5));
 
-		AbstractColumn columnState = ColumnBuilder.getInstance().addColumnProperty("state", String.class.getName())
+		DJColumn columnState = ColumnBuilder.getInstance().addColumnProperty("state", String.class.getName())
 			.addTitle("State").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnBranch = ColumnBuilder.getInstance().addColumnProperty("branch", String.class.getName())
+		DJColumn columnBranch = ColumnBuilder.getInstance().addColumnProperty("branch", String.class.getName())
 			.addTitle("Branch").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaProductLine = ColumnBuilder.getInstance().addColumnProperty("productLine", String.class.getName())
+		DJColumn columnaProductLine = ColumnBuilder.getInstance().addColumnProperty("productLine", String.class.getName())
 			.addTitle("Product Line").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaItem = ColumnBuilder.getInstance().addColumnProperty("item", String.class.getName())
+		DJColumn columnaItem = ColumnBuilder.getInstance().addColumnProperty("item", String.class.getName())
 			.addTitle("Item").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnCode = ColumnBuilder.getInstance().addColumnProperty("id", Long.class.getName())
+		DJColumn columnCode = ColumnBuilder.getInstance().addColumnProperty("id", Long.class.getName())
 			.addTitle("ID").addWidth(new Integer(40))
 			.addStyle(amountStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaCantidad = ColumnBuilder.getInstance().addColumnProperty("quantity", Long.class.getName())
+		DJColumn columnaCantidad = ColumnBuilder.getInstance().addColumnProperty("quantity", Long.class.getName())
 			.addTitle("Quantity").addWidth(new Integer(80))
 			.addStyle(amountStyle).addHeaderStyle(headerStyle).build();
 
@@ -122,7 +122,7 @@ public class ConditionalStylesReportTest extends TestCase {
 
 		ArrayList conditionalStyles = createConditionalStyles(amountStyle);
 
-		AbstractColumn columnAmount = ColumnBuilder.getInstance().addColumnProperty("amount", Float.class.getName())
+		DJColumn columnAmount = ColumnBuilder.getInstance().addColumnProperty("amount", Float.class.getName())
 			.addTitle("Amount").addWidth(new Integer(90)).addPattern("$ 0.00")
 			.addConditionalStyles(conditionalStyles)
 			.addStyle(amountStyle)
@@ -151,21 +151,21 @@ public class ConditionalStylesReportTest extends TestCase {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 */
-	private ArrayList createConditionalStyles(Style baseStyle) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
-		Style style0 = (Style) BeanUtils.cloneBean(baseStyle);
+	private ArrayList createConditionalStyles(DJStyle baseStyle) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+		DJStyle style0 = (DJStyle) BeanUtils.cloneBean(baseStyle);
 		style0.setTextColor(Color.RED);
-		Style style1 = (Style) BeanUtils.cloneBean(baseStyle);
+		DJStyle style1 = (DJStyle) BeanUtils.cloneBean(baseStyle);
 		style1.setTextColor(Color.YELLOW);
-		Style style2 = (Style) BeanUtils.cloneBean(baseStyle);
+		DJStyle style2 = (DJStyle) BeanUtils.cloneBean(baseStyle);
 		style2.setTextColor(Color.GREEN);
 
-		StatusLightCondition status0 = new StatusLightCondition(new Double(0), new Double(5000));
-		StatusLightCondition status1 = new StatusLightCondition(new Double(5000), new Double(7000));
-		StatusLightCondition status2 = new StatusLightCondition(new Double(7000),new Double(100000));
+		DJStatusLightCondition status0 = new DJStatusLightCondition(new Double(0), new Double(5000));
+		DJStatusLightCondition status1 = new DJStatusLightCondition(new Double(5000), new Double(7000));
+		DJStatusLightCondition status2 = new DJStatusLightCondition(new Double(7000),new Double(100000));
 
-		ConditionalStyle condition0 = new ConditionalStyle(status0,style0);
-		ConditionalStyle condition1 = new ConditionalStyle(status1,style1);
-		ConditionalStyle condition2 = new ConditionalStyle(status2,style2);
+		DJConditionalStyle condition0 = new DJConditionalStyle(status0,style0);
+		DJConditionalStyle condition1 = new DJConditionalStyle(status1,style1);
+		DJConditionalStyle condition2 = new DJConditionalStyle(status2,style2);
 
 		ArrayList conditionalStyles = new ArrayList();
 		conditionalStyles.add(condition0);

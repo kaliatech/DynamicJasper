@@ -37,20 +37,20 @@ import java.util.Locale;
 
 import ar.com.fdvs.dj.core.layout.HorizontalBandAlignment;
 import ar.com.fdvs.dj.domain.AutoText;
-import ar.com.fdvs.dj.domain.ColumnProperty;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
+import ar.com.fdvs.dj.domain.DJOperation;
 import ar.com.fdvs.dj.domain.DJChart;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.DynamicReportOptions;
-import ar.com.fdvs.dj.domain.ImageBanner;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJImageBanner;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.constants.GroupLayout;
 import ar.com.fdvs.dj.domain.constants.Page;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
-import ar.com.fdvs.dj.domain.entities.Subreport;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.GlobalGroupColumn;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.DJGroupVariable;
+import ar.com.fdvs.dj.domain.entities.DJSubreport;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJGlobalGroupColumn;
 
 /**
  * Builder created to give users a friendly way of creating a DynamicReport.</br>
@@ -145,7 +145,7 @@ public class DynamicReportBuilder {
 	public DynamicReport build(){
 		report.setOptions(options);
 		if (globalFooterVariables != null || globalHeaderVariables != null) {
-			ColumnsGroup globalGroup = createDummyGroup();
+			DJGroup globalGroup = createDummyGroup();
 			report.getColumnsGroups().add(0,globalGroup);			
 		}
 		
@@ -159,8 +159,8 @@ public class DynamicReportBuilder {
 		ArrayList aux = new ArrayList(concatenatedReports);
 //		Collections.reverse(aux);
 		for (Iterator iterator = aux.iterator(); iterator.hasNext();) {
-			Subreport subreport = (Subreport) iterator.next();
-			ColumnsGroup globalGroup = createDummyGroup();
+			DJSubreport subreport = (DJSubreport) iterator.next();
+			DJGroup globalGroup = createDummyGroup();
 			globalGroup.getFooterSubreports().add(subreport);
 			report.getColumnsGroups().add(0,globalGroup);
 		}
@@ -170,10 +170,10 @@ public class DynamicReportBuilder {
 	/**
 	 * @return
 	 */
-	private ColumnsGroup createDummyGroup() {
-		ColumnsGroup globalGroup = new ColumnsGroup();
+	private DJGroup createDummyGroup() {
+		DJGroup globalGroup = new DJGroup();
 		globalGroup.setLayout(GroupLayout.EMPTY);
-		GlobalGroupColumn globalCol = new GlobalGroupColumn();
+		DJGlobalGroupColumn globalCol = new DJGlobalGroupColumn();
 		globalCol.setTitle(globalTitle);
 		
 		globalGroup.setColumnToGroupBy(globalCol);
@@ -192,12 +192,12 @@ public class DynamicReportBuilder {
 		return this;
 	}
 
-	public DynamicReportBuilder addColumn(AbstractColumn column) {
+	public DynamicReportBuilder addColumn(DJColumn column) {
 		report.getColumns().add(column);
 		return this;
 	}
 
-	public DynamicReportBuilder addGroup(ColumnsGroup group) {
+	public DynamicReportBuilder addGroup(DJGroup group) {
 		report.getColumnsGroups().add(group);
 		return this;
 	}
@@ -293,12 +293,12 @@ public class DynamicReportBuilder {
 		return this;
 	}
 
-	public DynamicReportBuilder addTitleStyle(Style titleStyle) {
+	public DynamicReportBuilder addTitleStyle(DJStyle titleStyle) {
 		this.report.setTitleStyle(titleStyle);
 		return this;
 	}
 
-	public DynamicReportBuilder addSubtitleStyle(Style subtitleStyle) {
+	public DynamicReportBuilder addSubtitleStyle(DJStyle subtitleStyle) {
 		this.report.setSubtitleStyle(subtitleStyle);
 		return this;
 	}
@@ -312,7 +312,7 @@ public class DynamicReportBuilder {
 		return this;
 	}
 
-	public DynamicReportBuilder addOddRowBackgroundStyle(Style oddRowBackgroundStyle) {
+	public DynamicReportBuilder addOddRowBackgroundStyle(DJStyle oddRowBackgroundStyle) {
 		this.options.setOddRowBackgroundStyle(oddRowBackgroundStyle);
 		return this;
 	}
@@ -322,17 +322,17 @@ public class DynamicReportBuilder {
 		return this;
 	}
 
-	public DynamicReportBuilder addGlobalHeaderVariable(AbstractColumn col, ColumnsGroupVariableOperation op) {
+	public DynamicReportBuilder addGlobalHeaderVariable(DJColumn col, DJOperation op) {
 		if (this.globalHeaderVariables == null)
 			this.globalHeaderVariables = new ArrayList();
-		this.globalHeaderVariables.add(new ColumnsGroupVariable(col, op));
+		this.globalHeaderVariables.add(new DJGroupVariable(col, op));
 		return this;
 	}
 
-	public DynamicReportBuilder addGlobalFooterVariable(AbstractColumn col, ColumnsGroupVariableOperation op) {
+	public DynamicReportBuilder addGlobalFooterVariable(DJColumn col, DJOperation op) {
 		if (this.globalFooterVariables == null)
 			this.globalFooterVariables = new ArrayList();
-		this.globalFooterVariables.add(new ColumnsGroupVariable(col, op));
+		this.globalFooterVariables.add(new DJGroupVariable(col, op));
 		return this;
 	}
 
@@ -359,13 +359,13 @@ public class DynamicReportBuilder {
 	}
 
 	public DynamicReportBuilder addImageBanner(String path, Integer width, Integer height, byte align) {
-		ImageBanner banner = new ImageBanner(path,width.intValue(),height.intValue(),align);
+		DJImageBanner banner = new DJImageBanner(path,width.intValue(),height.intValue(),align);
 		options.getImageBanners().put(new Byte(align), banner);
 		return this;
 	}
 
 	public DynamicReportBuilder addFirstPageImageBanner(String path, Integer width, Integer height, byte align) {
-		ImageBanner banner = new ImageBanner(path,width.intValue(),height.intValue(),align);
+		DJImageBanner banner = new DJImageBanner(path,width.intValue(),height.intValue(),align);
 		options.getFirstPageImageBanners().put(new Byte(align), banner);
 		return this;
 	}
@@ -378,7 +378,7 @@ public class DynamicReportBuilder {
 	 * @return
 	 */
 	public DynamicReportBuilder addField(String name, String className) {
-		report.getFields().add(new ColumnProperty(name,className));
+		report.getFields().add(new DJColumnProperty(name,className));
 		return this;
 	}
 
@@ -416,7 +416,7 @@ public class DynamicReportBuilder {
 	}
 	
 	
-	public DynamicReportBuilder addDefaultStyles(Style title, Style subtitle, Style columnHeader, Style columDetail) {
+	public DynamicReportBuilder addDefaultStyles(DJStyle title, DJStyle subtitle, DJStyle columnHeader, DJStyle columDetail) {
 		if (columDetail != null) 
 			options.setDefaultDetailStyle(columDetail);
 		
@@ -447,7 +447,7 @@ public class DynamicReportBuilder {
 	 * @param jrFooterSubreport
 	 * @return
 	 */
-	public DynamicReportBuilder addConcatenatedReport(Subreport jrFooterSubreport) {
+	public DynamicReportBuilder addConcatenatedReport(DJSubreport jrFooterSubreport) {
 		concatenatedReports.add(jrFooterSubreport);
 		return this;
 	}

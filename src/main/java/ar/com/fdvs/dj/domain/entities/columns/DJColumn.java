@@ -31,14 +31,14 @@ package ar.com.fdvs.dj.domain.entities.columns;
 
 import java.util.ArrayList;
 import java.util.List;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJOperation;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.entities.Entity;
 
 /**
  * Abstract Class used as base for the different Column types.
  */
-public abstract class AbstractColumn implements Entity {
+public abstract class DJColumn implements Entity {
 
 	//Internal column name
 	private String name;
@@ -48,8 +48,8 @@ public abstract class AbstractColumn implements Entity {
 	private Integer posY = new Integer(0);
 	private Integer width = new Integer(100);
 	private Boolean fixedWidth = Boolean.FALSE;
-	private Style style = new Style();
-	private Style headerStyle = new Style();
+	private DJStyle style = new DJStyle();
+	private DJStyle headerStyle = new DJStyle();
 	private String pattern;
 	private Boolean printRepeatedValues = Boolean.TRUE;
 	private Boolean blankWhenNull = Boolean.TRUE;
@@ -88,19 +88,19 @@ public abstract class AbstractColumn implements Entity {
 		this.posY = posY;
 	}
 
-	public Style getHeaderStyle() {
+	public DJStyle getHeaderStyle() {
 		return headerStyle;
 	}
 
-	public void setHeaderStyle(Style headerStyle) {
+	public void setHeaderStyle(DJStyle headerStyle) {
 		this.headerStyle = headerStyle;
 	}
 
-	public Style getStyle() {
+	public DJStyle getStyle() {
 		return style;
 	}
 
-	public void setStyle(Style style) {
+	public void setStyle(DJStyle style) {
 		this.style = style;
 	}
 
@@ -134,9 +134,9 @@ public abstract class AbstractColumn implements Entity {
 
 	public abstract String getGroupVariableName(String type, String columnToGroupByProperty);
 
-	public abstract String getVariableClassName(ColumnsGroupVariableOperation op);
+	public abstract String getVariableClassName(DJOperation op);
 
-	public abstract String getInitialExpression(ColumnsGroupVariableOperation op);
+	public abstract String getInitialExpression(DJOperation op);
 
 	public String getName() {
 		return name;

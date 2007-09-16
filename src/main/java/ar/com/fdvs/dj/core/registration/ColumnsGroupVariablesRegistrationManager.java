@@ -40,19 +40,19 @@ import net.sf.jasperreports.engine.design.JRDesignGroup;
 import net.sf.jasperreports.engine.design.JRDesignVariable;
 import ar.com.fdvs.dj.core.registration.AbstractEntityRegistrationManager;
 import ar.com.fdvs.dj.core.registration.EntitiesRegistrationException;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
+import ar.com.fdvs.dj.domain.DJOperation;
 import ar.com.fdvs.dj.domain.DynamicJasperDesign;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroupVariable;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.DJGroupVariable;
 import ar.com.fdvs.dj.domain.entities.Entity;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 
 /**
  * Manager invoked to register variables for groups of columns. </br>
- * A ColumnsGroupVariable is read and transformed into a JRDesignVariable. </br>
+ * A DJGroupVariable is read and transformed into a JRDesignVariable. </br>
  * </br>
- * @see ColumnsGroup
+ * @see DJGroup
  */
 public class ColumnsGroupVariablesRegistrationManager extends AbstractEntityRegistrationManager {
 
@@ -78,9 +78,9 @@ public class ColumnsGroupVariablesRegistrationManager extends AbstractEntityRegi
 
 	protected Object transformEntity(Entity entity) {
 		log.debug("transforming group variable...");
-		ColumnsGroupVariable columnsGroupVariable = (ColumnsGroupVariable) entity;
-		AbstractColumn col = columnsGroupVariable.getColumnToApplyOperation();
-		ColumnsGroupVariableOperation op = columnsGroupVariable.getOperation();
+		DJGroupVariable columnsGroupVariable = (DJGroupVariable) entity;
+		DJColumn col = columnsGroupVariable.getColumnToApplyOperation();
+		DJOperation op = columnsGroupVariable.getOperation();
 
 		JRDesignExpression expression = new JRDesignExpression();
 

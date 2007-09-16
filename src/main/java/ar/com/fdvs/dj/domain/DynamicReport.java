@@ -40,15 +40,15 @@ public class DynamicReport {
 
 	private String title;
 	private String subtitle;
-	private Style titleStyle = new Style("reportTitleStyle");
-	private Style subtitleStyle = new Style("reportSubtitleStyle");
+	private DJStyle titleStyle = new DJStyle("reportTitleStyle");
+	private DJStyle subtitleStyle = new DJStyle("reportSubtitleStyle");
 	
 	private Locale reportLocale = Locale.getDefault();
 	private String resourceBundle = null;
 
-	//<AbstractColumn>
+	//<DJColumn>
 	private List columns = new ArrayList();
-	//<ColumnsGroup>
+	//<DJGroup>
 	private List columnsGroups = new ArrayList();
 	
 	//<DJChart>
@@ -113,19 +113,19 @@ public class DynamicReport {
 		this.subtitle = subtitle;
 	}
 
-	public Style getSubtitleStyle() {
+	public DJStyle getSubtitleStyle() {
 		return subtitleStyle;
 	}
 
-	public void setSubtitleStyle(Style subtitleStyle) {
+	public void setSubtitleStyle(DJStyle subtitleStyle) {
 		this.subtitleStyle = subtitleStyle;
 	}
 
-	public Style getTitleStyle() {
+	public DJStyle getTitleStyle() {
 		return titleStyle;
 	}
 
-	public void setTitleStyle(Style titleStyle) {
+	public void setTitleStyle(DJStyle titleStyle) {
 		this.titleStyle = titleStyle;
 	}
 

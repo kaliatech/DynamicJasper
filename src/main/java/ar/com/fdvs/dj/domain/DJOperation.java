@@ -32,24 +32,24 @@ package ar.com.fdvs.dj.domain;
 /**
  * Operations that can be shown as a group variable.</br>
  * </br>
- * @see OperationColumn
+ * @see DJOperationColumn
  */
-public class ColumnsGroupVariableOperation {
+public class DJOperation {
 
-	public static ColumnsGroupVariableOperation AVERAGE = new ColumnsGroupVariableOperation( (byte) 3);
-	public static ColumnsGroupVariableOperation COUNT = new ColumnsGroupVariableOperation( (byte) 1);
-	public static ColumnsGroupVariableOperation FIRST = new ColumnsGroupVariableOperation((byte) 9);
-	public static ColumnsGroupVariableOperation HIGHEST = new ColumnsGroupVariableOperation((byte) 5);
-	public static ColumnsGroupVariableOperation LOWEST = new ColumnsGroupVariableOperation((byte) 4);
-	public static ColumnsGroupVariableOperation NOTHING = new ColumnsGroupVariableOperation((byte) 0);
-	public static ColumnsGroupVariableOperation STANDARD_DEVIATION = new ColumnsGroupVariableOperation((byte) 6);
-	public static ColumnsGroupVariableOperation SUM = new ColumnsGroupVariableOperation((byte)2);
-	public static ColumnsGroupVariableOperation SYSTEM = new ColumnsGroupVariableOperation((byte) 8);
-	public static ColumnsGroupVariableOperation VARIANCE = new ColumnsGroupVariableOperation((byte) 7);
+	public static DJOperation AVERAGE = new DJOperation( (byte) 3);
+	public static DJOperation COUNT = new DJOperation( (byte) 1);
+	public static DJOperation FIRST = new DJOperation((byte) 9);
+	public static DJOperation HIGHEST = new DJOperation((byte) 5);
+	public static DJOperation LOWEST = new DJOperation((byte) 4);
+	public static DJOperation NOTHING = new DJOperation((byte) 0);
+	public static DJOperation STANDARD_DEVIATION = new DJOperation((byte) 6);
+	public static DJOperation SUM = new DJOperation((byte)2);
+	public static DJOperation SYSTEM = new DJOperation((byte) 8);
+	public static DJOperation VARIANCE = new DJOperation((byte) 7);
 
 	private byte value;
 
-	private ColumnsGroupVariableOperation(byte value){
+	private DJOperation(byte value){
 		this.value = value;
 	}
 

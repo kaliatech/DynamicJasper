@@ -44,9 +44,9 @@ import net.sf.jasperreports.view.JasperViewer;
 import ar.com.fdvs.dj.core.DJConstants;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
+import ar.com.fdvs.dj.domain.DJOperation;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.builders.FastReportBuilder;
@@ -58,10 +58,10 @@ import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Stretching;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.Subreport;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.DJSubreport;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
 import ar.com.fdvs.dj.test.ReportExporter;
 import ar.com.fdvs.dj.test.TestRepositoryProducts;
 import ar.com.fdvs.dj.util.SortUtils;
@@ -70,18 +70,18 @@ public class SubReportTest extends TestCase {
 
 	public DynamicReport buildReport() throws Exception {
 
-		Style detailStyle = new Style();
-		Style headerStyle = new Style();
+		DJStyle detailStyle = new DJStyle();
+		DJStyle headerStyle = new DJStyle();
 		headerStyle.setFont(Font.ARIAL_MEDIUM_BOLD);
 		headerStyle.setBorder(Border.MEDIUM);
 		headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
 		headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
 
-		Style titleStyle = new Style();
+		DJStyle titleStyle = new DJStyle();
 		titleStyle.setFont(new Font(18, Font._FONT_VERDANA, true));
-		Style importeStyle = new Style();
+		DJStyle importeStyle = new DJStyle();
 		importeStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
-		Style oddRowStyle = new Style();
+		DJStyle oddRowStyle = new DJStyle();
 		oddRowStyle.setBorder(Border.NO_BORDER);
 		oddRowStyle.setBackgroundColor(Color.LIGHT_GRAY);
 		oddRowStyle.setTransparency(Transparency.OPAQUE);
@@ -98,37 +98,37 @@ public class SubReportTest extends TestCase {
 			.addPrintBackgroundOnOddRows(true)
 			.addOddRowBackgroundStyle(oddRowStyle);
 
-		AbstractColumn columnState = ColumnBuilder.getInstance()
+		DJColumn columnState = ColumnBuilder.getInstance()
 				.addColumnProperty("state", String.class.getName()).addTitle(
 						"State").addWidth(new Integer(85))
 				.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnBranch = ColumnBuilder.getInstance()
+		DJColumn columnBranch = ColumnBuilder.getInstance()
 				.addColumnProperty("branch", String.class.getName()).addTitle(
 						"Branch").addWidth(new Integer(85)).addStyle(
 						detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaProductLine = ColumnBuilder.getInstance()
+		DJColumn columnaProductLine = ColumnBuilder.getInstance()
 				.addColumnProperty("productLine", String.class.getName())
 				.addTitle("Product Line").addWidth(new Integer(85)).addStyle(
 						detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaItem = ColumnBuilder.getInstance()
+		DJColumn columnaItem = ColumnBuilder.getInstance()
 				.addColumnProperty("item", String.class.getName()).addTitle(
 						"Item").addWidth(new Integer(85)).addStyle(detailStyle)
 				.addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnCode = ColumnBuilder.getInstance()
+		DJColumn columnCode = ColumnBuilder.getInstance()
 				.addColumnProperty("id", Long.class.getName()).addTitle("ID")
 				.addWidth(new Integer(40)).addStyle(importeStyle)
 				.addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaQuantity = ColumnBuilder.getInstance()
+		DJColumn columnaQuantity = ColumnBuilder.getInstance()
 				.addColumnProperty("quantity", Long.class.getName()).addTitle(
 						"Quantity").addWidth(new Integer(80)).addStyle(
 						importeStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnAmount = ColumnBuilder.getInstance()
+		DJColumn columnAmount = ColumnBuilder.getInstance()
 				.addColumnProperty("amount", Float.class.getName()).addTitle(
 						"Amount").addWidth(new Integer(90))
 				.addPattern("$ 0.00").addStyle(importeStyle).addHeaderStyle(
@@ -137,24 +137,24 @@ public class SubReportTest extends TestCase {
 		GroupBuilder gb1 = new GroupBuilder();
 		
 //		 define the criteria column to group by (columnState)
-		ColumnsGroup g1 = gb1.addCriteriaColumn((PropertyColumn) columnState).addFooterVariable(columnAmount,
-						ColumnsGroupVariableOperation.SUM) // tell the group place a variable footer of the column "columnAmount" with the SUM of allvalues of the columnAmount in this group.
+		DJGroup g1 = gb1.addCriteriaColumn((DJPropertyColumn) columnState).addFooterVariable(columnAmount,
+						DJOperation.SUM) // tell the group place a variable footer of the column "columnAmount" with the SUM of allvalues of the columnAmount in this group.
 				.addFooterVariable(columnaQuantity,
-						ColumnsGroupVariableOperation.SUM) // idem for the columnaQuantity column
+						DJOperation.SUM) // idem for the columnaQuantity column
 				.addGroupLayout(GroupLayout.VALUE_IN_HEADER_WITH_COLNAMES) // tells the group how to be shown, there are manyposibilities, see the GroupLayout for more.
 				.build();
 
-		Style defaultFooterVariableStyle = new Style();
+		DJStyle defaultFooterVariableStyle = new DJStyle();
 		defaultFooterVariableStyle.setStreching(Stretching.NO_STRETCH);
 		defaultFooterVariableStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
 		defaultFooterVariableStyle.setFont(Font.ARIAL_MEDIUM_BOLD);
 		
 		GroupBuilder gb2 = new GroupBuilder(); // Create another group (using another column as criteria)
-		ColumnsGroup g2 = gb2.addCriteriaColumn((PropertyColumn) columnBranch) // and we add the same operations for the columnAmount and
-				.addFooterVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
-				.addFooterVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
-				.addHeaderVariable(columnAmount,ColumnsGroupVariableOperation.SUM) // columnaQuantity columns
-				.addHeaderVariable(columnaQuantity,ColumnsGroupVariableOperation.SUM)
+		DJGroup g2 = gb2.addCriteriaColumn((DJPropertyColumn) columnBranch) // and we add the same operations for the columnAmount and
+				.addFooterVariable(columnAmount,DJOperation.SUM) // columnaQuantity columns
+				.addFooterVariable(columnaQuantity,DJOperation.SUM)
+				.addHeaderVariable(columnAmount,DJOperation.SUM) // columnaQuantity columns
+				.addHeaderVariable(columnaQuantity,DJOperation.SUM)
 				.addDefaultFooterVariableStyle(defaultFooterVariableStyle)
 				.addDefaultHeaderVariableStyle(defaultFooterVariableStyle)
 				.build();
@@ -173,7 +173,7 @@ public class SubReportTest extends TestCase {
 		drb.addGroup(g2); // add group g2
 
 		JasperReport jrHeaderSubreport = createHeaderSubreport();
-		Subreport headerSubreport = new Subreport();
+		DJSubreport headerSubreport = new DJSubreport();
 		headerSubreport.setReport(jrHeaderSubreport);
 		headerSubreport.setDataSourceExpression("statistics");
 		headerSubreport.setDataSourceOrigin(DJConstants.SUBREPORT_DATA_SOURCE_ORIGIN_FIELD);
@@ -181,12 +181,12 @@ public class SubReportTest extends TestCase {
 		g2.getHeaderSubreports().add(headerSubreport);
 
 		JasperReport jrFooterSubreport = createFooterSubreport();
-		Subreport footerSubreport = new Subreport();
+		DJSubreport footerSubreport = new DJSubreport();
 		footerSubreport.setReport(jrFooterSubreport);
 		footerSubreport.setDataSourceExpression("statistics");
 		g2.getFooterSubreports().add(footerSubreport);
 		
-		Style subreportStyle = new Style();
+		DJStyle subreportStyle = new DJStyle();
 		subreportStyle.setBorder(Border.MEDIUM);
 		subreportStyle.setBorderColor(Color.blue);
 		footerSubreport.setStyle(subreportStyle);
@@ -209,7 +209,7 @@ public class SubReportTest extends TestCase {
 			.addColumn("Amount", "amount", Float.class.getName(), 50)
 			.addMargins(5, 5, 20, 20)
 			.addUseFullPageWidth(true)
-			.addTitle("Subreport for this group")
+			.addTitle("DJSubreport for this group")
 			.build();
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}
@@ -224,7 +224,7 @@ public class SubReportTest extends TestCase {
 		.addGroups(1)
 		.addMargins(5, 5, 20, 20)
 		.addUseFullPageWidth(true)
-		.addTitle("Subreport for this group")
+		.addTitle("DJSubreport for this group")
 		.build();
 		return DynamicJasperHelper.generateJasperReport(dr, new ClassicLayoutManager());
 	}

@@ -36,17 +36,17 @@ import java.util.Iterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ar.com.fdvs.dj.domain.CustomExpression;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 
 /**
  * Column created to handle Custom Expressions.</br>
- * @see CustomExpression
+ * @see DJCustomExpression
  */
-public class ExpressionColumn extends SimpleColumn {
+public class DJExpressionColumn extends DJSimpleColumn {
 	
-	private static final Log log = LogFactory.getLog(ExpressionColumn.class);
+	private static final Log log = LogFactory.getLog(DJExpressionColumn.class);
 
-	private CustomExpression expression;
+	private DJCustomExpression expression;
 	
 	private Collection columns;
 
@@ -58,16 +58,16 @@ public class ExpressionColumn extends SimpleColumn {
 		this.columns = columns;
 	}
 
-	public CustomExpression getExpression() {
+	public DJCustomExpression getExpression() {
 		return expression;
 	}
 
-	public void setExpression(CustomExpression expression) {
+	public void setExpression(DJCustomExpression expression) {
 		this.expression = expression;
 	}
 
 //	public String getTextForExpression() {
-//		return "(("+CustomExpression.class.getName()+")$P{"+getColumnProperty().getProperty()+"})."+CustomExpression.EVAL_METHOD_NAME+"($F{"+getColumnProperty().getProperty()+"})";
+//		return "(("+DJCustomExpression.class.getName()+")$P{"+getColumnProperty().getProperty()+"})."+DJCustomExpression.EVAL_METHOD_NAME+"($F{"+getColumnProperty().getProperty()+"})";
 //	}
 
 	public String getValueClassNameForExpression() {
@@ -78,9 +78,9 @@ public class ExpressionColumn extends SimpleColumn {
 		StringBuffer sb = new StringBuffer("new  ar.com.fdvs.dj.util.PropertiesMap()");
 		ArrayList properties = new ArrayList();
 		for (Iterator iter = columns.iterator(); iter.hasNext();) {
-			AbstractColumn col = (AbstractColumn) iter.next();
-			if (col instanceof SimpleColumn && !(col instanceof ExpressionColumn)) {
-				SimpleColumn propcol = (SimpleColumn) col;
+			DJColumn col = (DJColumn) iter.next();
+			if (col instanceof DJSimpleColumn && !(col instanceof DJExpressionColumn)) {
+				DJSimpleColumn propcol = (DJSimpleColumn) col;
 				properties.add(propcol.getColumnProperty());
 			}
 		}
@@ -91,19 +91,19 @@ public class ExpressionColumn extends SimpleColumn {
 		
 		
 		for (Iterator iter = columns.iterator(); iter.hasNext();) {
-			AbstractColumn col = (AbstractColumn) iter.next();
-			if (col instanceof SimpleColumn && !(col instanceof ExpressionColumn)) {
-				SimpleColumn propcol = (SimpleColumn) col;
+			DJColumn col = (DJColumn) iter.next();
+			if (col instanceof DJSimpleColumn && !(col instanceof DJExpressionColumn)) {
+				DJSimpleColumn propcol = (DJSimpleColumn) col;
 				String propname = propcol.getColumnProperty().getProperty();
 				sb.append(".with(\"" +  propname + "\",$F{" + propname + "})");
 			}
 			
 		}
-		String stringExpression = "((("+CustomExpression.class.getName()+")$P{"+getColumnProperty().getProperty()+"})."+CustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" ))";
-		//		return "(("+getValueClassNameForExpression()+")$P{"+getColumnProperty().getProperty()+"})."+CustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" )";
-		log.debug("Expression for CustomExpression = " + stringExpression);
+		String stringExpression = "((("+DJCustomExpression.class.getName()+")$P{"+getColumnProperty().getProperty()+"})."+DJCustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" ))";
+		//		return "(("+getValueClassNameForExpression()+")$P{"+getColumnProperty().getProperty()+"})."+DJCustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" )";
+		log.debug("Expression for DJCustomExpression = " + stringExpression);
 		return stringExpression;
-//		return "($P{"+getColumnProperty().getProperty()+"})."+CustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" )";
+//		return "($P{"+getColumnProperty().getProperty()+"})."+DJCustomExpression.EVAL_METHOD_NAME+"( "+ sb.toString() +" )";
 	}	
 
 }

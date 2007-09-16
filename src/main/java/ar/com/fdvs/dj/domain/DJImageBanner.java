@@ -1,6 +1,6 @@
 package ar.com.fdvs.dj.domain;
 
-public class ImageBanner {
+public class DJImageBanner {
 	
 	public static final byte ALIGN_LEFT = 0;
 	public static final byte ALIGN_RIGHT = 1;
@@ -11,7 +11,7 @@ public class ImageBanner {
 	private int height= 0;
 	private byte align = 0;
 	
-	public ImageBanner(){
+	public DJImageBanner(){
 	};
 	
 	public int getHeight() {
@@ -38,7 +38,7 @@ public class ImageBanner {
 	public void setWidth(int width) {
 		this.width = width;
 	}
-	public ImageBanner(String imagePath, int width, int height, byte align) {
+	public DJImageBanner(String imagePath, int width, int height, byte align) {
 		this.imagePath = imagePath;
 		this.width = width;
 		this.height = height;

@@ -52,7 +52,7 @@ import ar.com.fdvs.dj.domain.constants.VerticalAlign;
  * headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);</br>
  * headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);</br>
  */
-public class Style implements Serializable, Cloneable {
+public class DJStyle implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -87,9 +87,9 @@ public class Style implements Serializable, Cloneable {
     private boolean stretchWithOverflow = true;
     private boolean blankWhenNull = true;
     
-    public Style(){}
+    public DJStyle(){}
 
-    public Style(String name){
+    public DJStyle(String name){
     	this.name = name;
     }
 

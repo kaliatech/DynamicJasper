@@ -27,40 +27,36 @@
  *
  */
 
-package ar.com.fdvs.dj.domain.entities.columns;
+package ar.com.fdvs.dj.domain;
 
-import ar.com.fdvs.dj.domain.ColumnsGroupVariableOperation;
-import ar.com.fdvs.dj.domain.ColumnProperty;
+public class DJColumnProperty {
 
-/**
- * Column created to handle global variables.
- */
-public class GlobalGroupColumn extends PropertyColumn {
+	private String property;
+	private String valueClassName;
 
-	public GlobalGroupColumn() {
-		ColumnProperty columnProperty = new ColumnProperty("global", String.class.getName());
-		setTitle("global");
-		setColumnProperty(columnProperty);
+    public DJColumnProperty(String property, String valueClass) {
+    	this.setProperty(property);
+    	this.setValueClassName(valueClass);
+    }
+
+	public DJColumnProperty() {
+		super();
+	}
+	
+    public String getProperty() {
+		return property;
 	}
 
-	public String getGroupVariableName(String type, String columnToGroupByProperty) {
-		return null;
+	public void setProperty(String property) {
+		this.property = property;
 	}
 
-	public String getInitialExpression(ColumnsGroupVariableOperation op) {
-		return null;
+	public String getValueClassName() {
+		return valueClassName;
 	}
 
-	public String getTextForExpression() {
-		return "\"" + getTitle() + "\"";
-	}
-
-	public String getValueClassNameForExpression() {
-		return String.class.getName();
-	}
-
-	public String getVariableClassName(ColumnsGroupVariableOperation op) {
-		return null;
+    public void setValueClassName(String valueClass) {
+		this.valueClassName = valueClass;
 	}
 
 }

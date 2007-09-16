@@ -27,36 +27,46 @@
  *
  */
 
-package ar.com.fdvs.dj.domain;
+package ar.com.fdvs.dj.domain.entities.conditionalStyle;
 
-public class ColumnProperty {
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 
-	private String property;
-	private String valueClassName;
+/**
+ * Special DJCustomExpression that complements very well with Conditionl Styles.
+ */
+public class DJStatusLightCondition implements DJCustomExpression {
 
-    public ColumnProperty(String property, String valueClass) {
-    	this.setProperty(property);
-    	this.setValueClassName(valueClass);
-    }
+	private Double min;
+	private Double max;
 
-	public ColumnProperty() {
-		super();
+	private int mode = 0; // 0: x < min, 1: min < x < max, 2: x > max
+
+	public DJStatusLightCondition(Double min, Double max) {
+		this.min = min;
+		this.max = max;
+
+		if (min != null && max == null)
+			mode = 0;
+		else if (min != null && max != null)
+			mode = 1;
+		else if (min == null && max != null)
+			mode = 2;
 	}
 	
-    public String getProperty() {
-		return property;
-	}
+	public Object evaluate(Object object) {
+		if (object == null)
+			return null;
 
-	public void setProperty(String property) {
-		this.property = property;
-	}
+		Number number = (Number)object;
 
-	public String getValueClassName() {
-		return valueClassName;
-	}
+		if (mode == 0){
+			return new Boolean(min.doubleValue() > number.doubleValue());
+		} else if (mode == 1) {
+			return new Boolean(min.doubleValue() <= number.doubleValue() && max.doubleValue() > number.doubleValue());
+		} else {
+			return new Boolean(max.doubleValue() <= number.doubleValue());
+		}
 
-    public void setValueClassName(String valueClass) {
-		this.valueClassName = valueClass;
 	}
 
 }

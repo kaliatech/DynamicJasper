@@ -39,7 +39,7 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 public class DynamicJasperDesign extends JasperDesign {
 
 	private static final long serialVersionUID = -1181633006527486089L;
-	//<String paramName, CustomExpression expression>
+	//<String paramName, DJCustomExpression expression>
 	private TreeMap parametersWithValues;
 
 	public DynamicJasperDesign() {

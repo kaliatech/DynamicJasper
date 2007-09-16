@@ -34,16 +34,16 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import ar.com.fdvs.dj.domain.ColumnProperty;
+import ar.com.fdvs.dj.domain.DJColumnProperty;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.constants.Border;
 import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
 
 /**
  * Builder created to give users a friendly way of creating a DynamicReport.</br>
@@ -65,20 +65,20 @@ import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
  */
 public class FastReportBuilder extends DynamicReportBuilder {
 
-	Style currencyStyle;
-	Style numberStyle;
-	Style subtitleStyle;
+	DJStyle currencyStyle;
+	DJStyle numberStyle;
+	DJStyle subtitleStyle;
 
 	protected int groupCount = 0;
 
 	public FastReportBuilder(){
-		currencyStyle = new Style("currencyStyle");
+		currencyStyle = new DJStyle("currencyStyle");
 		currencyStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
 
-		numberStyle = new Style("numberStyle");
+		numberStyle = new DJStyle("numberStyle");
 		numberStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
 
-		Style defaultHeaderStyle = options.getDefaultHeaderStyle();
+		DJStyle defaultHeaderStyle = options.getDefaultHeaderStyle();
 		defaultHeaderStyle.setFont(Font.ARIAL_MEDIUM_BOLD);
 		defaultHeaderStyle.setHorizontalAlign(HorizontalAlign.CENTER);
 		defaultHeaderStyle.setBorderBottom(Border.DOTTED);
@@ -86,7 +86,7 @@ public class FastReportBuilder extends DynamicReportBuilder {
 		defaultHeaderStyle.setBackgroundColor(Color.LIGHT_GRAY);
 		defaultHeaderStyle.setTransparency(Transparency.OPAQUE);
 
-		Style titleStyle2 = report.getTitleStyle();
+		DJStyle titleStyle2 = report.getTitleStyle();
 		titleStyle2.setFont(Font.ARIAL_BIG_BOLD);
 		titleStyle2.setHorizontalAlign(HorizontalAlign.CENTER);
 		titleStyle2.setVerticalAlign(VerticalAlign.TOP);
@@ -97,7 +97,7 @@ public class FastReportBuilder extends DynamicReportBuilder {
 		//build the groups
 		for (int i = 0; i < groupCount; i++) {
 			GroupBuilder gb = new GroupBuilder();
-			PropertyColumn col = (PropertyColumn) report.getColumns().get(i);
+			DJPropertyColumn col = (DJPropertyColumn) report.getColumns().get(i);
 			gb.addCriteriaColumn(col);
 			report.getColumnsGroups().add(gb.build());
 		}
@@ -107,8 +107,8 @@ public class FastReportBuilder extends DynamicReportBuilder {
 
 
 	public FastReportBuilder addColumn(String title, String property, String className, int width) throws ColumnBuilderException, ClassNotFoundException {
-		AbstractColumn column = ColumnBuilder.getInstance()
-			.addColumnProperty(new ColumnProperty(property, className))
+		DJColumn column = ColumnBuilder.getInstance()
+			.addColumnProperty(new DJColumnProperty(property, className))
 			.addWidth(new Integer(width))
 			.addTitle(title)
 			.build();
@@ -121,8 +121,8 @@ public class FastReportBuilder extends DynamicReportBuilder {
 	}
 
 	public FastReportBuilder addColumn(String title, String property, String className, int width, boolean fixedWidth) throws ColumnBuilderException, ClassNotFoundException {
-		AbstractColumn column = ColumnBuilder.getInstance()
-		.addColumnProperty(new ColumnProperty(property, className))
+		DJColumn column = ColumnBuilder.getInstance()
+		.addColumnProperty(new DJColumnProperty(property, className))
 		.addWidth(new Integer(width))
 		.addTitle(title)
 		.addFixedWidth(Boolean.valueOf(fixedWidth))
@@ -135,7 +135,7 @@ public class FastReportBuilder extends DynamicReportBuilder {
 		return this;
 	}
 
-	private void guessStyle(String className, AbstractColumn column) throws ClassNotFoundException {
+	private void guessStyle(String className, DJColumn column) throws ClassNotFoundException {
 		Class clazz = Class.forName(className);
 		if (BigDecimal.class.isAssignableFrom(clazz) || Float.class.isAssignableFrom(clazz) || Double.class.isAssignableFrom(clazz)) {
 			column.setPattern("$ #.00");

@@ -61,16 +61,16 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ar.com.fdvs.dj.domain.CustomExpression;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 import ar.com.fdvs.dj.domain.DJChart;
 import ar.com.fdvs.dj.domain.DJChartOptions;
 import ar.com.fdvs.dj.domain.DynamicReport;
 import ar.com.fdvs.dj.domain.DynamicReportOptions;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.builders.DataSetFactory;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.conditionalStyle.ConditionalStyle;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
+import ar.com.fdvs.dj.domain.entities.conditionalStyle.DJConditionalStyle;
 
 /**
  * Abstract Class used as base for the different Layout Managers.</br>
@@ -88,7 +88,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 	private JasperDesign design;
 	private DynamicReport report;
 
-	protected abstract void transformDetailBandTextField(AbstractColumn column, JRDesignTextField textField);
+	protected abstract void transformDetailBandTextField(DJColumn column, JRDesignTextField textField);
 	
 	private HashMap reportStyles = new HashMap();
 
@@ -128,7 +128,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 	 * @throws JRException 
 	 */
 	protected void ensureStyles()  {
-			Style defaultDetailStyle = getReport().getOptions().getDefaultDetailStyle();
+			DJStyle defaultDetailStyle = getReport().getOptions().getDefaultDetailStyle();
 			
 //			JRBaseStyle defaulDetailtStyle = defaultDetailStyle.transform();
 //			JRDesignStyle defStyle = new JRDesignStyle();
@@ -145,10 +145,10 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 //			addStyleToDesign( report.getSubtitleStyle().transform() );
 			
 			
-			Style defaultHeaderStyle = getReport().getOptions().getDefaultHeaderStyle();
+			DJStyle defaultHeaderStyle = getReport().getOptions().getDefaultHeaderStyle();
 	//		Style defaultFooterStyle = getReport().getOptions().getDefaultFooterStyle();
 			for (Iterator iter = report.getColumns().iterator(); iter.hasNext();) {
-				AbstractColumn column = (AbstractColumn) iter.next();
+				DJColumn column = (DJColumn) iter.next();
 				if (column.getStyle() == null) 
 					column.setStyle(defaultDetailStyle);
 				if (column.getHeaderStyle() == null) 
@@ -189,11 +189,11 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 
 		for (Iterator iter = report.getColumns().iterator(); iter.hasNext();) {
 
-			AbstractColumn column = (AbstractColumn)iter.next();
+			DJColumn column = (DJColumn)iter.next();
 
 			if (column.getConditionalStyles() != null && !column.getConditionalStyles().isEmpty() ){
         		for (Iterator iterator = column.getConditionalStyles().iterator(); iterator.hasNext();) {
-					ConditionalStyle condition = (ConditionalStyle) iterator.next();
+					DJConditionalStyle condition = (DJConditionalStyle) iterator.next();
 					JRDesignTextField textField = generateTextFieldFromColumn(column, getReport().getOptions().getDetailHeight().intValue(), null);
 					transformDetailBandTextField(column, textField);
 					applyStyleToElement(condition.getStyle(), textField);
@@ -237,7 +237,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 	 * @return JRExpression
 	 */
 	private JRExpression getExpressionForConditionalStyle(String paramName, String textForExpression) {
-		 String text = "(("+CustomExpression.class.getName()+")$P{"+paramName+"})."+CustomExpression.EVAL_METHOD_NAME+"("+textForExpression+")";
+		 String text = "(("+DJCustomExpression.class.getName()+")$P{"+paramName+"})."+DJCustomExpression.EVAL_METHOD_NAME+"("+textForExpression+")";
 		 JRDesignExpression expression = new JRDesignExpression();
 		 expression.setValueClass(Boolean.class);
 		 expression.setText(text);
@@ -250,7 +250,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 
 		for (Iterator iter = report.getColumns().iterator(); iter.hasNext();) {
 
-			AbstractColumn col = (AbstractColumn) iter.next();
+			DJColumn col = (DJColumn) iter.next();
 			if (col.getTitle() == null)
 				continue;
 
@@ -271,7 +271,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 			textField.setPrintWhenDetailOverflows(true);
 			textField.setBlankWhenNull(true);
 
-			Style headerStyle = col.getHeaderStyle();
+			DJStyle headerStyle = col.getHeaderStyle();
 			if (headerStyle == null)
 				headerStyle = report.getOptions().getDefaultHeaderStyle();
 
@@ -281,7 +281,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 		}
 	}
 
-	protected final void applyStyleToElement(Style style, JRDesignElement textElement) {
+	protected final void applyStyleToElement(DJStyle style, JRDesignElement textElement) {
 		JRDesignStyle jrstyle = style.transform();
 		addStyleToDesign(jrstyle);
 		textElement.setStyle(jrstyle);
@@ -312,7 +312,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 			int columnsWidth = 0;
 			int notRezisableWidth = 0;
 			for (Iterator iterator =  report.getColumns().iterator(); iterator.hasNext();) {
-				AbstractColumn col = (AbstractColumn) iterator.next();
+				DJColumn col = (DJColumn) iterator.next();
 				columnsWidth += col.getWidth().intValue();
 				if (col.getFixedWidth().booleanValue())
 					notRezisableWidth += col.getWidth().intValue();
@@ -328,13 +328,13 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 
 			Collection resizableColumns = CollectionUtils.select( report.getColumns(),new Predicate() {
 				public boolean evaluate(Object arg0) {
-					return !((AbstractColumn)arg0).getFixedWidth().booleanValue();
+					return !((DJColumn)arg0).getFixedWidth().booleanValue();
 				}
 
 			}) ;
 
 			for (Iterator iter = resizableColumns.iterator(); iter.hasNext();) {
-				AbstractColumn col = (AbstractColumn) iter.next();
+				DJColumn col = (DJColumn) iter.next();
 
 				if (!iter.hasNext()) {
 					col.setWidth(new Integer(printableArea - notRezisableWidth - acu));
@@ -349,7 +349,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 		// If the columns width changed, the X position must be setted again.
 		int posx = 0;
 		for (Iterator iterator =  report.getColumns().iterator(); iterator.hasNext();) {
-			AbstractColumn col = (AbstractColumn) iterator.next();
+			DJColumn col = (DJColumn) iterator.next();
 			col.setPosX(new Integer(posx));
 			posx += col.getWidth().intValue();
 		}
@@ -409,13 +409,13 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 	}
 
 	/**
-	 * Creates a JasperReport DesignTextField from a DynamicJasper AbstractColumn.
-	 * @param AbstractColumn col
+	 * Creates a JasperReport DesignTextField from a DynamicJasper DJColumn.
+	 * @param DJColumn col
 	 * @param int height
-	 * @param ColumnsGroup group
+	 * @param DJGroup group
 	 * @return JRDesignTextField
 	 */
-	protected final JRDesignTextField generateTextFieldFromColumn(AbstractColumn col, int height, ColumnsGroup group) {
+	protected final JRDesignTextField generateTextFieldFromColumn(DJColumn col, int height, DJGroup group) {
 		JRDesignTextField textField = new JRDesignTextField();
 		JRDesignExpression exp = new JRDesignExpression();
 
@@ -439,7 +439,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 
         textField.setPrintWhenDetailOverflows(true);
 
-        Style columnStyle = col.getStyle();
+        DJStyle columnStyle = col.getStyle();
         if (columnStyle == null)
         	columnStyle = report.getOptions().getDefaultDetailStyle();
 
@@ -601,7 +601,7 @@ public abstract class AbstractLayoutManager implements LayoutManager {
 		return parentGroup;
 	}
 	
-	protected JRDesignGroup getGroupFromColumnsGroup(ColumnsGroup group){
+	protected JRDesignGroup getGroupFromColumnsGroup(DJGroup group){
 		int index = getReport().getColumnsGroups().indexOf(group);
 		return (JRDesignGroup) getDesign().getGroupsList().get(index);
 	}

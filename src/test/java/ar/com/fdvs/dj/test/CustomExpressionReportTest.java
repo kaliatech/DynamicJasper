@@ -40,9 +40,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import ar.com.fdvs.dj.core.DynamicJasperHelper;
 import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.CustomExpression;
+import ar.com.fdvs.dj.domain.DJCustomExpression;
 import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
 import ar.com.fdvs.dj.domain.constants.Border;
@@ -50,23 +50,23 @@ import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 import ar.com.fdvs.dj.util.SortUtils;
 
 public class CustomExpressionReportTest extends TestCase {
 
 	public DynamicReport buildReport() throws Exception {
 
-		Style detailStyle = new Style();
-		Style headerStyle = new Style();
+		DJStyle detailStyle = new DJStyle();
+		DJStyle headerStyle = new DJStyle();
 		headerStyle.setFont(Font.ARIAL_MEDIUM_BOLD); headerStyle.setBorder(Border.MEDIUM);
 		headerStyle.setHorizontalAlign(HorizontalAlign.CENTER); headerStyle.setVerticalAlign(VerticalAlign.MIDDLE);
 
-		Style titleStyle = new Style();
+		DJStyle titleStyle = new DJStyle();
 		titleStyle.setFont(new Font(18,Font._FONT_VERDANA,true));
-		Style amountStyle = new Style();
+		DJStyle amountStyle = new DJStyle();
 		amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
-		Style oddRowStyle = new Style();
+		DJStyle oddRowStyle = new DJStyle();
 		oddRowStyle.setBorder(Border.NO_BORDER);
 		Color veryLightGrey = new Color(230,230,230);
 		oddRowStyle.setBackgroundColor(veryLightGrey);oddRowStyle.setTransparency(Transparency.OPAQUE);
@@ -89,35 +89,35 @@ public class CustomExpressionReportTest extends TestCase {
 			.addColumnsPerPage(new Integer(1))
 			.addColumnSpace(new Integer(5));
 
-		AbstractColumn columnState = ColumnBuilder.getInstance().addColumnProperty("state", String.class.getName())
+		DJColumn columnState = ColumnBuilder.getInstance().addColumnProperty("state", String.class.getName())
 			.addTitle("State").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-//		AbstractColumn columnBranch = ColumnBuilder.getInstance().addColumnProperty("branch", String.class.getName())
+//		DJColumn columnBranch = ColumnBuilder.getInstance().addColumnProperty("branch", String.class.getName())
 //			.addTitle("Branch").addWidth(new Integer(85))
 //			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-//		AbstractColumn columnaProductLine = ColumnBuilder.getInstance().addColumnProperty("productLine", String.class.getName())
+//		DJColumn columnaProductLine = ColumnBuilder.getInstance().addColumnProperty("productLine", String.class.getName())
 //			.addTitle("Product Line").addWidth(new Integer(85))
 //			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaItem = ColumnBuilder.getInstance().addColumnProperty("item", String.class.getName())
+		DJColumn columnaItem = ColumnBuilder.getInstance().addColumnProperty("item", String.class.getName())
 			.addTitle("item").addWidth(new Integer(85))
 			.addStyle(detailStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnCode = ColumnBuilder.getInstance().addColumnProperty("id", Long.class.getName())
+		DJColumn columnCode = ColumnBuilder.getInstance().addColumnProperty("id", Long.class.getName())
 			.addTitle("ID").addWidth(new Integer(40))
 			.addStyle(amountStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnaCantidad = ColumnBuilder.getInstance().addColumnProperty("quantity", Long.class.getName())
+		DJColumn columnaCantidad = ColumnBuilder.getInstance().addColumnProperty("quantity", Long.class.getName())
 			.addTitle("Quantity").addWidth(new Integer(80))
 			.addStyle(amountStyle).addHeaderStyle(headerStyle).build();
 
-		AbstractColumn columnAmount = ColumnBuilder.getInstance().addColumnProperty("amount", Float.class.getName())
+		DJColumn columnAmount = ColumnBuilder.getInstance().addColumnProperty("amount", Float.class.getName())
 			.addTitle("Amount").addWidth(new Integer(90)).addPattern("$ 0.00")
 			.addStyle(amountStyle).addHeaderStyle(headerStyle).build();
 		
-		AbstractColumn columnaCustomExpression = ColumnBuilder.getInstance()
+		DJColumn columnaCustomExpression = ColumnBuilder.getInstance()
 		.addCustomExpression(getCustomExpression())
 		//.addColumnProperty("item", String.class.getName())
 		.addTitle("CustomExp").addWidth(new Integer(90))
@@ -141,8 +141,8 @@ public class CustomExpressionReportTest extends TestCase {
 		return dr;
 	}
 
-	private CustomExpression getCustomExpression() {
-		return new CustomExpression() {
+	private DJCustomExpression getCustomExpression() {
+		return new DJCustomExpression() {
 		
 			public Object evaluate(Object object) {
 				Map map = (Map) object;

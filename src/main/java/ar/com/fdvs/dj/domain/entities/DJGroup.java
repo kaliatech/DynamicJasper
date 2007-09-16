@@ -32,31 +32,31 @@ package ar.com.fdvs.dj.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.DJStyle;
 import ar.com.fdvs.dj.domain.constants.GroupLayout;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import ar.com.fdvs.dj.domain.entities.columns.DJPropertyColumn;
 
 /**
  * Entity created to handle groups of columns.</br>
  * Multiple groups can be created for a single report. In this case the result </br>
  * would be a nesting with the latest groups added to the report being the inner ones.
  */
-public class ColumnsGroup implements Entity {
+public class DJGroup implements Entity {
 
 	//The column used to group by
-	private PropertyColumn columnToGroupBy;
+	private DJPropertyColumn columnToGroupBy;
 
-	public PropertyColumn getColumnToGroupBy() {
+	public DJPropertyColumn getColumnToGroupBy() {
 		return columnToGroupBy;
 	}
 
-	public void setColumnToGroupBy(PropertyColumn columnToGroupBy) {
+	public void setColumnToGroupBy(DJPropertyColumn columnToGroupBy) {
 		this.columnToGroupBy = columnToGroupBy;
 	}
 
-	//<ColumnsGroupVariable>
+	//<DJGroupVariable>
 	private List headerVariables = new ArrayList();
-	//<ColumnsGroupVariable>
+	//<DJGroupVariable>
 	private List footerVariables = new ArrayList();
 	private Integer headerHeight = new Integer(20);
 	private Integer footerHeight = new Integer(20);
@@ -66,30 +66,30 @@ public class ColumnsGroup implements Entity {
 	
 	/**
 	 * Default Style for variables when showing in footer.
-	 * Firts looks for the style at the ColumnsGroupVariable, then the default, finally
+	 * Firts looks for the style at the DJGroupVariable, then the default, finally
 	 * it usses the columns style.
 	 */
-	private Style defaulFooterStyle;
+	private DJStyle defaulFooterStyle;
 	
 	/**
 	 * Default Style for variables when showing in header.
 	 * The lookup order is the same as for "defaulFooterStyle"
 	 */
-	private Style defaulHeaderStyle;
+	private DJStyle defaulHeaderStyle;
 
-	public Style getDefaulFooterStyle() {
+	public DJStyle getDefaulFooterStyle() {
 		return defaulFooterStyle;
 	}
 
-	public void setDefaulFooterStyle(Style defaulFooterStyle) {
+	public void setDefaulFooterStyle(DJStyle defaulFooterStyle) {
 		this.defaulFooterStyle = defaulFooterStyle;
 	}
 
-	public Style getDefaulHeaderStyle() {
+	public DJStyle getDefaulHeaderStyle() {
 		return defaulHeaderStyle;
 	}
 
-	public void setDefaulHeaderStyle(Style defaulHeaderStyle) {
+	public void setDefaulHeaderStyle(DJStyle defaulHeaderStyle) {
 		this.defaulHeaderStyle = defaulHeaderStyle;
 	}
 

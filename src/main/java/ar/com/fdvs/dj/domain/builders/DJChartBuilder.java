@@ -6,13 +6,13 @@ import java.util.List;
 import ar.com.fdvs.dj.domain.DJChart;
 import ar.com.fdvs.dj.domain.DJChartColors;
 import ar.com.fdvs.dj.domain.DJChartOptions;
-import ar.com.fdvs.dj.domain.entities.ColumnsGroup;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.columns.DJColumn;
 
 public class DJChartBuilder {
 	private Byte type;
-	private ColumnsGroup columnsGroup;
-	private AbstractColumn column;
+	private DJGroup columnsGroup;
+	private DJColumn column;
 	private Byte operation;
 	private DJChartOptions chartOptions;
 	
@@ -32,11 +32,11 @@ public class DJChartBuilder {
 		return options;
 	}
 
-	public AbstractColumn getColumn() {
+	public DJColumn getColumn() {
 		return column;
 	}
 	
-	public DJChartBuilder addColumn(AbstractColumn column) {
+	public DJChartBuilder addColumn(DJColumn column) {
 		this.column = column;
 		return this;
 	}
@@ -59,16 +59,16 @@ public class DJChartBuilder {
 		return this;
 	}
 
-	public ColumnsGroup getColumnsGroup() {
+	public DJGroup getColumnsGroup() {
 		return columnsGroup;
 	}
 
-	public DJChartBuilder addColumnsGroup(ColumnsGroup columnsGroup) {
+	public DJChartBuilder addColumnsGroup(DJGroup columnsGroup) {
 		this.columnsGroup = columnsGroup;
 		return this;
 	}
 	
-	public DJChartBuilder addParams(byte type, ColumnsGroup columnsGroup, AbstractColumn column, byte operation, DJChartOptions chartOptions){
+	public DJChartBuilder addParams(byte type, DJGroup columnsGroup, DJColumn column, byte operation, DJChartOptions chartOptions){
 		return this.addType(type).addColumnsGroup(columnsGroup).addColumn(column).addOperation(operation).addChartOptions(chartOptions);
 	}
 
