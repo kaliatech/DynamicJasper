@@ -34,6 +34,11 @@
 			<author email="juan.alvarez@fdvsolutions.com">Juan Manuel Alvarez</author>
 			</properties>
 	 <body>
+				 <release version="2.1.1" date="2008-09-18"	desc="fixes">
+					<action dev="Juan Manuel Alvarez" type="update">
+						 Subreports white space when empty :: Now removing white space when a subreport is empty
+					 </action>
+				 </release>
 				 <release version="2.1.0" date="2008-09-06"	desc="fixes">
 					 <action dev="Juan Manuel Alvarez" type="add">
 						 Tests enhancements :: To ensure product quality, the following technologies had been added to the automated tests:
