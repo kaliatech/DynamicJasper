@@ -34,6 +34,11 @@
 			<author email="juan.alvarez@fdvsolutions.com">Juan Manuel Alvarez</author>
 			</properties>
 	 <body>
+				 <release version="2.1.2" date="2008-11-06"	desc="fixes">
+					 <action dev="Juan Manuel Alvarez" type="fix">
+						 Images border were shown all the time
+					 </action>
+				 </release>
 				 <release version="2.1.1" date="2008-09-18"	desc="fixes">
 					<action dev="Juan Manuel Alvarez" type="update">
 						 Subreports white space when empty :: Now removing white space when a subreport is empty
