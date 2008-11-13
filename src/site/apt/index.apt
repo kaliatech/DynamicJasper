@@ -5,7 +5,9 @@
 		------
 		Date
 		 
-DynamicJasper
+DynamicJasper (version 2.x)
+
+	{{{http://dynamicjasper.sourceforge.net//}Go to latest version site}}
 
 	DynamicJasper (DJ) is an API that hides the complexity of Jasper
 	Reports, it helps developers to save time when designing

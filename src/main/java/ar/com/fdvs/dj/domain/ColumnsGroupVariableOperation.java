@@ -29,6 +29,7 @@
 
 package ar.com.fdvs.dj.domain;
 
+import net.sf.jasperreports.engine.JRVariable;
 import ar.com.fdvs.dj.domain.entities.columns.OperationColumn;
 
 /**
@@ -48,6 +49,7 @@ public class ColumnsGroupVariableOperation {
 	public static ColumnsGroupVariableOperation SUM = new ColumnsGroupVariableOperation((byte)2);
 	public static ColumnsGroupVariableOperation SYSTEM = new ColumnsGroupVariableOperation((byte) 8);
 	public static ColumnsGroupVariableOperation VARIANCE = new ColumnsGroupVariableOperation((byte) 7);
+	public static ColumnsGroupVariableOperation DISTINCT_COUNT = new ColumnsGroupVariableOperation(JRVariable.CALCULATION_DISTINCT_COUNT);
 
 	private byte value;
 

@@ -290,7 +290,7 @@
 
 <html>
   <head>
-    <title>$title</title>
+    <title>$title ($version)</title>
     <style type="text/css" media="all">
       @import url("$relativePath/css/dj-maven-base.css");
       @import url("$relativePath/css/dj-maven-theme.css");
