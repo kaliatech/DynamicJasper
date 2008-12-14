@@ -105,5 +105,12 @@ public interface DJConstants {
 
 	String CUSTOM_EXPRESSION__PARAMETERS_MAP = "REPORT_PARAMETERS_MAP";
 
+	public static String FORMAT_CSV = "CSV";
+	public static String FORMAT_HTML = "HTML";
+	public static String FORMAT_PDF = "PDF";
+	public static String FORMAT_XLS = "XLS";
+	public static String FORMAT_XML = "XML";
 
+
+	
 }
